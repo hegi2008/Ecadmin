@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.yinhai.ec</groupId>
+	<artifactId>ecadmin</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+	<description>The parent project of ecadmin</description>
+	<inceptionYear>2015</inceptionYear>
+	<modules>
+	  <module>ecadmin-weixin</module>
+	  <module>ecadmin-web</module>
+      <module>servlet-async</module>
+    <module>message</module>
+  </modules>
+  
+	<properties>
+  		<!-- Common libs -->
+		<spring.version>4.2.2.RELEASE</spring.version>
+		<spring-ibatis.version>2.0.8</spring-ibatis.version>
+		<httpclient.version>4.5.2</httpclient.version>
+		<httpcore.version>4.4.4</httpcore.version>
+		<fastjson.version>1.2.5</fastjson.version>
+		<cglib.version>2.2.2</cglib.version>
+		<shiro.version>1.2.4</shiro.version>
+		<shiro-cas.version>1.2.4</shiro-cas.version>
+		<mongodb.version>3.2.2</mongodb.version>
+		<druid.version>1.0.16</druid.version>
+		<mysql-connector-java.version>5.1.29</mysql-connector-java.version>
+		<mybatis.version>3.3.0</mybatis.version>
+		<mybatis-spring.version>1.2.3</mybatis-spring.version>
+		<ehcache.version>2.10.1</ehcache.version>
+		<quartz.version>2.2.2</quartz.version>
+		<dubbo.version>2.8.5.6</dubbo.version>
+		<zookeeper.version>3.4.8</zookeeper.version>
+		<zkclient.version>0.1</zkclient.version>
+		<kryo-serializers.version>0.37</kryo-serializers.version>
+		<javassist.version>3.18.1-GA</javassist.version>
+		
+		<jstl.version>1.2</jstl.version>
+		<slf4j.version>1.7.21</slf4j.version>
+		<log4j.version>1.2.16</log4j.version>
+		<logback.version>1.1.2</logback.version>
+		<jedis.version>2.8.0</jedis.version>
+		<spring-data-redis.version>1.5.0.RELEASE</spring-data-redis.version>
+		<junit.version>4.10</junit.version>
+		<jackson.version>2.6.4</jackson.version>
+		<ezmorph.version>1.0.6</ezmorph.version>
+		<dom4j.version>1.6.1</dom4j.version>
+		<commons-validator.version>1.3.1</commons-validator.version>
+		<javax.servlet.version>3.1.0</javax.servlet.version>
+		<javax.servlet.jsp.version>2.3.2-b02</javax.servlet.jsp.version>
+		<kaptcha.version>0.0.9</kaptcha.version>
+		<freemarker.version>2.3.23</freemarker.version>
+		<poi.version>3.14</poi.version>
+		<dwr.version>3.0.1-RELEASE</dwr.version>
+		<cas-client.version>3.3.2</cas-client.version>
+		<commons-net.version>3.4</commons-net.version>
+		<aspectjweaver.version>1.8.7</aspectjweaver.version>
+		<commons-fileupload.version>1.3.1</commons-fileupload.version>
+		
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<!-- 在parent中添加的依赖 在子项目模板中就不需要再添加了 -->
+	<dependencies>
+		<!-- junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+		<!-- 日志相关 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<!-- httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>${httpcore.version}</version>
+		</dependency>
+		<!-- json libs -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ezmorph</groupId>
+			<artifactId>ezmorph</artifactId>
+			<version>${ezmorph.version}</version>
+		</dependency>
+		<!-- javax.servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>${javax.servlet.jsp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>  
+	    <plugins>
+	     <!-- 指定jdk版本 -->
+	      <plugin>  
+	        <groupId>org.apache.maven.plugins</groupId>  
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.1</version> 
+	        <configuration>  
+	          <source>1.7</source>  
+	          <target>1.7</target>  
+	        </configuration>
+	      </plugin>
+	      <plugin>  
+            <groupId>org.apache.maven.plugins</groupId>  
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.4</version> 
+            <configuration>
+            	<warName>${project.build.finalName}</warName>
+            	<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+            	<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
+            	<!-- <webResources>
+            		<webResource>
+            			自动过滤 替换 将${替换成系统属性}
+            			<filtering>false</filtering>
+            			<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+            			<targetPath>WEB-INF</targetPath>
+            		</webResource>
+            		<webResource>
+            			<filtering>false</filtering>
+            			<directory>${basedir}/src/main/resources</directory>
+            			<excludes>
+            				<exclude>rebel.xml</exclude>
+            				<exclude>generatorConfig.xml</exclude>
+            			</excludes>
+            			<targetPath>WEB-INF/classes</targetPath>
+            		</webResource>
+            	</webResources>
+            	<packagingExcludes>${basedir}/src/main/resources/rebel.xml,${basedir}/src/main/resources/generatorConfig.xml</packagingExcludes>
+            	<warSourceExcludes>${basedir}/src/main/resources/rebel.xml,${basedir}/src/main/resources/generatorConfig.xml</warSourceExcludes> -->
+            </configuration>  
+          </plugin>
+	    </plugins>
+	</build>
+</project>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.user" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.UserDomain" >
+    <id column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="USER_SEX" property="userSex" jdbcType="TINYINT" />
+    <result column="USER_LOGIN" property="userLogin" jdbcType="VARCHAR" />
+    <result column="USER_PWD" property="userPwd" jdbcType="VARCHAR" />
+    <result column="USER_PWD_WRONG_TIMES" property="userPwdWrongTimes" jdbcType="TINYINT" />
+    <result column="USER_PWD_UPDATE_TIME" property="userPwdUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="USER_LOCK" property="userLock" jdbcType="TINYINT" />
+    <result column="USER_STATUS" property="userStatus" jdbcType="TINYINT" />
+    <result column="USER_PHONE" property="userPhone" jdbcType="VARCHAR" />
+    <result column="USER_EMAIL" property="userEmail" jdbcType="VARCHAR" />
+    <result column="USER_HEADER_PIC" property="userHeaderPic" jdbcType="VARCHAR" />
+    <result column="USER_CREATER" property="userCreater" jdbcType="INTEGER" />
+    <result column="USER_CREATE_TIME" property="userCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    USER_ID, USER_NAME, USER_SEX, USER_LOGIN, USER_PWD, USER_PWD_WRONG_TIMES, USER_PWD_UPDATE_TIME, 
+    USER_LOCK, USER_STATUS, USER_PHONE, USER_EMAIL, USER_HEADER_PIC, USER_CREATER, USER_CREATE_TIME,
+    ORG_ID, ORG_NAME
+  </sql>
+  
+  <resultMap id="UserRolwMap" type="com.yinhai.ec.common.domain.UserRolesDomain" >
+    <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ROLE_STRING" property="roleString" jdbcType="VARCHAR" />
+    <result column="ROLE_TYPE" property="roleType" jdbcType="TINYINT" />
+    <result column="ROLE_STATUS" property="roleStatus" jdbcType="TINYINT" />
+    <result column="ROLE_CREATER" property="roleCreater" jdbcType="INTEGER" />
+    <result column="ROLE_CREATE_TIME" property="roleCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!-- 根据用户名 密码获取user -->
+  <select id="selectByLoginAndPassword" parameterType="map" resultMap="BaseResultMap">
+    select 
+    	<include refid="Base_Column_List" />
+    from hy_user
+    where USER_LOGIN = #{user_login,jdbcType=VARCHAR}
+    and USER_PWD = #{user_pwd,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据用户名获取user -->
+  <select id="findUserByUsername" parameterType="map" resultMap="BaseResultMap">
+    select 
+    	<include refid="Base_Column_List" />
+    from hy_user
+    where USER_LOGIN = #{user_login,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据用户ID获取用户角色roles -->
+  <select id="getUserRolesByUserId" parameterType="integer" resultMap="UserRolwMap">
+  	SELECT
+		ro.role_id,
+		ro.role_name,
+		ro.role_string,
+		ro.role_type,
+		ro.role_status,
+		ro.role_creater,
+		ro.role_create_time
+	FROM
+		hy_user_roles AS ro ,
+		hy_user_role_relation AS rr
+	WHERE ro.ROLE_ID = rr.ROLE_ID
+	AND ro.ROLE_STATUS = 1
+	AND rr.USER_ID = #{value,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 根据用户权限字符串获取用户可访问的权限URL列表 -->
+  <select id="getUserPermissionUrlsByRoleString" parameterType="string" resultType="map">
+  	select
+		menu.menu_id,
+		menu.parent_id,
+		menu.menu_name,
+		menu.menu_url,
+		menu.menu_icon,
+		menu.menu_status,
+		menu.menu_create_time,
+		menu.menu_creater,
+		menua.role_create,
+		menua.role_delete,
+		menua.role_query,
+		menua.role_update,
+		menua.is_parent,
+		menua.role_string
+	from
+		hy_menu as menu,
+		hy_menu_auth as menua
+	where menu.menu_id = menua.menu_id
+	and menu.menu_status = 1
+	<!-- and menua.is_parent = 0 -->
+	and menua.role_id in(${value})
+	group by menua.menu_id
+  </select>
+  
+  <update id="updateUserByUserId" parameterType="com.yinhai.ec.common.domain.UserDomain" >
+    update hy_user
+    <set >
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        USER_SEX = #{userSex,jdbcType=TINYINT},
+      </if>
+      <if test="userLogin != null" >
+        USER_LOGIN = #{userLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        USER_PWD = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwdWrongTimes != null" >
+        USER_PWD_WRONG_TIMES = #{userPwdWrongTimes,jdbcType=TINYINT},
+      </if>
+      <if test="userPwdUpdateTime != null" >
+        USER_PWD_UPDATE_TIME = #{userPwdUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLock != null" >
+        USER_LOCK = #{userLock,jdbcType=TINYINT},
+      </if>
+      <if test="userStatus != null" >
+        USER_STATUS = #{userStatus,jdbcType=TINYINT},
+      </if>
+      <if test="userPhone != null" >
+        USER_PHONE = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userHeaderPic != null" >
+        USER_HEADER_PIC = #{userHeaderPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreater != null" >
+        USER_CREATER = #{userCreater,jdbcType=INTEGER},
+      </if>
+      <if test="userCreateTime != null" >
+        USER_CREATE_TIME = #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 验证登陆名是否重复 -->
+  <select id="selectCountFromLoginId" parameterType="string" resultType="integer">
+  	select count(1) from hy_user
+  	where USER_LOGIN = #{value,jdbcType=VARCHAR}
+  </select>
+</mapper>

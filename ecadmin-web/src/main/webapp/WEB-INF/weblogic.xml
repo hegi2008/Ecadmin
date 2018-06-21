@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app
+		xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd
+		http://xmlns.oracle.com/weblogic/weblogic-web-app
+		http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd">
+
+	<charset-params>
+		<input-charset>
+			<resource-path>/*</resource-path>
+			<java-charset-name>UTF-8</java-charset-name>
+		</input-charset>
+	</charset-params>
+	<context-root>/ejb_center</context-root>
+	<jsp-descriptor>
+		<backward-compatible>false</backward-compatible>
+		<page-check-seconds>1</page-check-seconds>
+		<precompile>false</precompile>
+	</jsp-descriptor>
+	<container-descriptor>
+        <!-- 定义WebLogic Server是否执行servlet检查以查看servlet是否已更改，如果已更改，是否重新加载。
+            -1:永不检查(生产环境中的默认值),
+            0:表示总是检查servlet。
+            1:每秒检查一次(开发环境默认值) -->
+        <servlet-reload-check-secs>1</servlet-reload-check-secs>
+        <!-- 针对 Web应用程序范围内资源路径中发现的缓存资源执行元数据缓存。该参数标识WebLogic Server检查资源是否发生修改的频率，如果已修改，则重新加载。
+            -1: 表示元数据进行缓存，但从不对磁盘进行检查以便找出所做的更改。建议在生产环境中使用该值，以提升性能。
+            0: 表示不执行元数据缓存。持续更改文件的客户必须将该参数设置为大于或等于 0的一个值。
+            1: 表示每秒重新加载一次。该值为开发环境中的默认值。 -->
+        <resource-reload-check-secs>1</resource-reload-check-secs>
+        <!-- 优先加载应用中的jar包 -->
+        <prefer-application-packages>
+            <package-name>antlr.*</package-name>
+            <package-name>org.slf4j.*</package-name>
+            <package-name>com.ctc.wstx.*</package-name>
+            <!--<package-name>org.apache.*</package-name>-->
+            <!--<package-name>javax.persistence.*</package-name>-->
+        </prefer-application-packages>
+	</container-descriptor>
+	<session-descriptor>
+		<debug-enabled>true</debug-enabled>
+		<!-- 集群环境下允许session复制 -->
+		<persistent-store-type>replicated_if_clustered</persistent-store-type>
+		<sharing-enabled>true</sharing-enabled>
+	</session-descriptor>
+</weblogic-web-app>

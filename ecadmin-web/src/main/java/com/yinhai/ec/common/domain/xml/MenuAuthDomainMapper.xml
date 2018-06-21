@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.mapper.MenuAuthDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.MenuAuthDomain" >
+    <id column="AUTH_ID" property="authId" jdbcType="INTEGER" />
+    <result column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <result column="MENU_ID" property="menuId" jdbcType="INTEGER" />
+    <result column="ROLE_CREATE" property="roleCreate" jdbcType="TINYINT" />
+    <result column="ROLE_QUERY" property="roleQuery" jdbcType="TINYINT" />
+    <result column="ROLE_UPDATE" property="roleUpdate" jdbcType="TINYINT" />
+    <result column="ROLE_DELETE" property="roleDelete" jdbcType="TINYINT" />
+    <result column="IS_PARENT" property="isParent" jdbcType="TINYINT" />
+    <result column="ROLE_STRING" property="roleString" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    AUTH_ID, ROLE_ID, MENU_ID, ROLE_CREATE, ROLE_QUERY, ROLE_UPDATE, ROLE_DELETE, IS_PARENT, 
+    ROLE_STRING
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hy_menu_auth
+    where AUTH_ID = #{authId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hy_menu_auth
+    where AUTH_ID = #{authId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.MenuAuthDomain" >
+    insert into hy_menu_auth (AUTH_ID, ROLE_ID, MENU_ID, 
+      ROLE_CREATE, ROLE_QUERY, ROLE_UPDATE, 
+      ROLE_DELETE, IS_PARENT, ROLE_STRING
+      )
+    values (#{authId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{menuId,jdbcType=INTEGER}, 
+      #{roleCreate,jdbcType=TINYINT}, #{roleQuery,jdbcType=TINYINT}, #{roleUpdate,jdbcType=TINYINT}, 
+      #{roleDelete,jdbcType=TINYINT}, #{isParent,jdbcType=TINYINT}, #{roleString,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.MenuAuthDomain" >
+    insert into hy_menu_auth
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="authId != null" >
+        AUTH_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="menuId != null" >
+        MENU_ID,
+      </if>
+      <if test="roleCreate != null" >
+        ROLE_CREATE,
+      </if>
+      <if test="roleQuery != null" >
+        ROLE_QUERY,
+      </if>
+      <if test="roleUpdate != null" >
+        ROLE_UPDATE,
+      </if>
+      <if test="roleDelete != null" >
+        ROLE_DELETE,
+      </if>
+      <if test="isParent != null" >
+        IS_PARENT,
+      </if>
+      <if test="roleString != null" >
+        ROLE_STRING,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="authId != null" >
+        #{authId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=INTEGER},
+      </if>
+      <if test="roleCreate != null" >
+        #{roleCreate,jdbcType=TINYINT},
+      </if>
+      <if test="roleQuery != null" >
+        #{roleQuery,jdbcType=TINYINT},
+      </if>
+      <if test="roleUpdate != null" >
+        #{roleUpdate,jdbcType=TINYINT},
+      </if>
+      <if test="roleDelete != null" >
+        #{roleDelete,jdbcType=TINYINT},
+      </if>
+      <if test="isParent != null" >
+        #{isParent,jdbcType=TINYINT},
+      </if>
+      <if test="roleString != null" >
+        #{roleString,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yinhai.ec.common.domain.MenuAuthDomain" >
+    update hy_menu_auth
+    <set >
+      <if test="roleId != null" >
+        ROLE_ID = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null" >
+        MENU_ID = #{menuId,jdbcType=INTEGER},
+      </if>
+      <if test="roleCreate != null" >
+        ROLE_CREATE = #{roleCreate,jdbcType=TINYINT},
+      </if>
+      <if test="roleQuery != null" >
+        ROLE_QUERY = #{roleQuery,jdbcType=TINYINT},
+      </if>
+      <if test="roleUpdate != null" >
+        ROLE_UPDATE = #{roleUpdate,jdbcType=TINYINT},
+      </if>
+      <if test="roleDelete != null" >
+        ROLE_DELETE = #{roleDelete,jdbcType=TINYINT},
+      </if>
+      <if test="isParent != null" >
+        IS_PARENT = #{isParent,jdbcType=TINYINT},
+      </if>
+      <if test="roleString != null" >
+        ROLE_STRING = #{roleString,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AUTH_ID = #{authId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yinhai.ec.common.domain.MenuAuthDomain" >
+    update hy_menu_auth
+    set ROLE_ID = #{roleId,jdbcType=INTEGER},
+      MENU_ID = #{menuId,jdbcType=INTEGER},
+      ROLE_CREATE = #{roleCreate,jdbcType=TINYINT},
+      ROLE_QUERY = #{roleQuery,jdbcType=TINYINT},
+      ROLE_UPDATE = #{roleUpdate,jdbcType=TINYINT},
+      ROLE_DELETE = #{roleDelete,jdbcType=TINYINT},
+      IS_PARENT = #{isParent,jdbcType=TINYINT},
+      ROLE_STRING = #{roleString,jdbcType=VARCHAR}
+    where AUTH_ID = #{authId,jdbcType=INTEGER}
+  </update>
+</mapper>

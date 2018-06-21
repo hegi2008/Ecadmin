@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.online" >
+  <resultMap id="OnlineResultMap" type="com.yinhai.ec.common.domain.OnlineDomain" >
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="SESSIONID" property="sessionid" jdbcType="VARCHAR" />
+    <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="LOGIN_IP" property="loginIp" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="OnlineLogResultMap" type="com.yinhai.ec.common.domain.OnlineLogDomain" >
+    <id column="LOG_ID" property="logId" jdbcType="INTEGER" />
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="SESSIONID" property="sessionid" jdbcType="VARCHAR" />
+    <result column="LOGIN_IP" property="loginIp" jdbcType="VARCHAR" />
+    <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="LOGOUT_TIME" property="logoutTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="getOnlineLogByUserIdAndSessionid" parameterType="com.yinhai.ec.common.domain.OnlineDomain" resultMap="OnlineLogResultMap">
+  	select 
+    	LOG_ID, USER_ID, SESSIONID, LOGIN_IP, LOGIN_TIME, LOGOUT_TIME
+    from hy_online_log
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  	and SESSIONID = #{sessionid,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 添加在线记录 -->
+  <insert id="addOnline" parameterType="com.yinhai.ec.common.domain.OnlineDomain">
+  	insert into hy_online (USER_ID, SESSIONID, LOGIN_TIME, 
+      LOGIN_IP)
+    values (#{userId,jdbcType=INTEGER}, #{sessionid,jdbcType=VARCHAR}, now(), 
+      #{loginIp,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 添加登陆记录 -->
+  <insert id="addOnlineLog" parameterType="com.yinhai.ec.common.domain.OnlineLogDomain">
+  	insert into hy_online_log (USER_ID, SESSIONID, 
+      LOGIN_IP, LOGIN_TIME
+      )
+    values (#{userId,jdbcType=INTEGER}, #{sessionid,jdbcType=VARCHAR}, 
+      #{loginIp,jdbcType=VARCHAR}, now()
+      )
+  </insert>
+  
+  <!-- 更新下线时间 -->
+  <update id="updateOnlineLogout" parameterType="com.yinhai.ec.common.domain.OnlineLogDomain">
+  	update hy_online_log
+  	set
+  		LOGOUT_TIME = now()
+  		<if test="isForceLogout != null" >
+        	,IS_FORCE_LOGOUT = #{isForceLogout,jdbcType=TINYINT}
+      	</if>
+  	where USER_ID = #{userId,jdbcType=INTEGER}
+  	and SESSIONID = #{sessionid,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="deleteOnlineByUserIdAndSessionid" parameterType="com.yinhai.ec.common.domain.OnlineDomain">
+  	delete from hy_online
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  	and SESSIONID = #{sessionid,jdbcType=VARCHAR}
+  </delete>
+</mapper>

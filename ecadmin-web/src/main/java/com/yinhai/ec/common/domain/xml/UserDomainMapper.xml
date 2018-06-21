@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.xml.UserDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.UserDomain" >
+    <id column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="USER_SEX" property="userSex" jdbcType="TINYINT" />
+    <result column="USER_LOGIN" property="userLogin" jdbcType="VARCHAR" />
+    <result column="USER_PWD" property="userPwd" jdbcType="VARCHAR" />
+    <result column="USER_PWD_WRONG_TIMES" property="userPwdWrongTimes" jdbcType="TINYINT" />
+    <result column="USER_PWD_UPDATE_TIME" property="userPwdUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="USER_LOCK" property="userLock" jdbcType="TINYINT" />
+    <result column="USER_STATUS" property="userStatus" jdbcType="TINYINT" />
+    <result column="USER_PHONE" property="userPhone" jdbcType="VARCHAR" />
+    <result column="USER_EMAIL" property="userEmail" jdbcType="VARCHAR" />
+    <result column="USER_HEADER_PIC" property="userHeaderPic" jdbcType="VARCHAR" />
+    <result column="USER_CREATER" property="userCreater" jdbcType="INTEGER" />
+    <result column="USER_CREATE_TIME" property="userCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    USER_ID, USER_NAME, USER_SEX, USER_LOGIN, USER_PWD, USER_PWD_WRONG_TIMES, USER_PWD_UPDATE_TIME, 
+    USER_LOCK, USER_STATUS, USER_PHONE, USER_EMAIL, USER_HEADER_PIC, USER_CREATER, USER_CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hy_user
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hy_user
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.UserDomain" >
+    insert into hy_user (USER_ID, USER_NAME, USER_SEX, 
+      USER_LOGIN, USER_PWD, USER_PWD_WRONG_TIMES, 
+      USER_PWD_UPDATE_TIME, USER_LOCK, USER_STATUS, 
+      USER_PHONE, USER_EMAIL, USER_HEADER_PIC, 
+      USER_CREATER, USER_CREATE_TIME)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userSex,jdbcType=TINYINT}, 
+      #{userLogin,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, #{userPwdWrongTimes,jdbcType=TINYINT}, 
+      #{userPwdUpdateTime,jdbcType=TIMESTAMP}, #{userLock,jdbcType=TINYINT}, #{userStatus,jdbcType=TINYINT}, 
+      #{userPhone,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userHeaderPic,jdbcType=VARCHAR}, 
+      #{userCreater,jdbcType=INTEGER}, #{userCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.UserDomain" >
+    insert into hy_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="userName != null" >
+        USER_NAME,
+      </if>
+      <if test="userSex != null" >
+        USER_SEX,
+      </if>
+      <if test="userLogin != null" >
+        USER_LOGIN,
+      </if>
+      <if test="userPwd != null" >
+        USER_PWD,
+      </if>
+      <if test="userPwdWrongTimes != null" >
+        USER_PWD_WRONG_TIMES,
+      </if>
+      <if test="userPwdUpdateTime != null" >
+        USER_PWD_UPDATE_TIME,
+      </if>
+      <if test="userLock != null" >
+        USER_LOCK,
+      </if>
+      <if test="userStatus != null" >
+        USER_STATUS,
+      </if>
+      <if test="userPhone != null" >
+        USER_PHONE,
+      </if>
+      <if test="userEmail != null" >
+        USER_EMAIL,
+      </if>
+      <if test="userHeaderPic != null" >
+        USER_HEADER_PIC,
+      </if>
+      <if test="userCreater != null" >
+        USER_CREATER,
+      </if>
+      <if test="userCreateTime != null" >
+        USER_CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        #{userSex,jdbcType=TINYINT},
+      </if>
+      <if test="userLogin != null" >
+        #{userLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwdWrongTimes != null" >
+        #{userPwdWrongTimes,jdbcType=TINYINT},
+      </if>
+      <if test="userPwdUpdateTime != null" >
+        #{userPwdUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLock != null" >
+        #{userLock,jdbcType=TINYINT},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=TINYINT},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userHeaderPic != null" >
+        #{userHeaderPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreater != null" >
+        #{userCreater,jdbcType=INTEGER},
+      </if>
+      <if test="userCreateTime != null" >
+        #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yinhai.ec.common.domain.UserDomain" >
+    update hy_user
+    <set >
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        USER_SEX = #{userSex,jdbcType=TINYINT},
+      </if>
+      <if test="userLogin != null" >
+        USER_LOGIN = #{userLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        USER_PWD = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwdWrongTimes != null" >
+        USER_PWD_WRONG_TIMES = #{userPwdWrongTimes,jdbcType=TINYINT},
+      </if>
+      <if test="userPwdUpdateTime != null" >
+        USER_PWD_UPDATE_TIME = #{userPwdUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLock != null" >
+        USER_LOCK = #{userLock,jdbcType=TINYINT},
+      </if>
+      <if test="userStatus != null" >
+        USER_STATUS = #{userStatus,jdbcType=TINYINT},
+      </if>
+      <if test="userPhone != null" >
+        USER_PHONE = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userHeaderPic != null" >
+        USER_HEADER_PIC = #{userHeaderPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreater != null" >
+        USER_CREATER = #{userCreater,jdbcType=INTEGER},
+      </if>
+      <if test="userCreateTime != null" >
+        USER_CREATE_TIME = #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yinhai.ec.common.domain.UserDomain" >
+    update hy_user
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      USER_SEX = #{userSex,jdbcType=TINYINT},
+      USER_LOGIN = #{userLogin,jdbcType=VARCHAR},
+      USER_PWD = #{userPwd,jdbcType=VARCHAR},
+      USER_PWD_WRONG_TIMES = #{userPwdWrongTimes,jdbcType=TINYINT},
+      USER_PWD_UPDATE_TIME = #{userPwdUpdateTime,jdbcType=TIMESTAMP},
+      USER_LOCK = #{userLock,jdbcType=TINYINT},
+      USER_STATUS = #{userStatus,jdbcType=TINYINT},
+      USER_PHONE = #{userPhone,jdbcType=VARCHAR},
+      USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+      USER_HEADER_PIC = #{userHeaderPic,jdbcType=VARCHAR},
+      USER_CREATER = #{userCreater,jdbcType=INTEGER},
+      USER_CREATE_TIME = #{userCreateTime,jdbcType=TIMESTAMP}
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

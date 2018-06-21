@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.role.manager" >
+  
+  <!-- 角色管理list -->
+  <select id="queryListRoleManager" parameterType="pp" resultType="map">
+  	select
+		r.role_id,<!-- 角色id -->
+		r.role_name,<!-- 角色名字 -->
+		r.role_string,<!-- 角色验证字符 (admin,developer,user...)-->
+		r.role_type,<!-- 角色类型(1.系统角色;2.应用角色) -->
+		r.role_status,<!-- 角色状态（1.有效;0.无效） -->
+		r.role_creater,<!-- 角色创建人 ID-->
+		ifnull(u.user_name,'系统默认角色') as role_creater_name,<!-- 角色创建人名字 -->
+		r.role_create_time <!-- 角色创建时间 -->
+	from
+		hy_user_roles r left join hy_user u on u.user_id=r.role_creater
+	where role_status = '1'
+	<if test="role_name != null and role_name != ''">
+		and instr(r.role_name , #{role_name,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="role_string != null and role_string != ''">
+		and instr(r.role_string , #{role_string,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="role_type != null and role_type != ''">
+		and r.role_type = #{role_type,jdbcType=TINYINT}
+	</if>
+	<if test="role_status != null">
+		and r.role_status = #{role_status,jdbcType=TINYINT}
+	</if>
+	<if test="role_creater != null">
+		and r.role_creater = #{role_creater,jdbcType=INTEGER}
+	</if>
+	<if test="role_creater_time != null">
+		and r.role_create_time = #{role_create_time,jdbcType=DATETIME}
+	</if>
+	order by r.role_create_time desc
+  </select>
+  
+  <select id="queryListPageRoleUser" parameterType="pp" resultType="map">
+    SELECT
+		hu.user_id,
+		hu.user_name,
+		hu.user_sex,
+		hu.user_login,
+		hu.user_pwd_update_time,
+		hu.user_status,
+		hu.user_phone,
+		hu.user_email,
+		hu.user_lock,
+		hu.user_header_pic,
+		hu.user_creater,
+		hu.user_create_time,
+		ifnull(f.user_name, '系统添加') AS creater_name
+	FROM
+		hy_user hu LEFT JOIN hy_user AS f ON hu.user_creater = f.user_id,
+		hy_user_role_relation urr
+	WHERE
+		urr.USER_ID = hu.USER_ID AND urr.ROLE_ID = #{role_id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 角色用户管理分页sql -->
+  <select id="queryListPageRoleUserManager" parameterType="pp" resultType="map">
+  	SELECT
+		u.user_id,
+		u.user_name,
+		u.user_sex,
+		u.user_login,
+		u.user_pwd_update_time,
+		u.user_status,
+		u.user_phone,
+		u.user_email,
+		u.user_lock,
+		u.user_header_pic,
+		u.user_creater,
+		u.user_create_time,
+		ifnull(f.user_name, '系统添加') AS creater_name
+	FROM
+		hy_user AS u
+	LEFT JOIN hy_user AS f ON u.user_creater = f.user_id
+	WHERE
+		1 = 1
+	<if test="role_id != null and role_id != ''">
+		AND u.USER_ID NOT IN(
+		SELECT
+			hu.USER_ID
+		FROM
+			hy_user hu,
+			hy_user_role_relation urr
+		WHERE
+			urr.USER_ID = hu.USER_ID AND urr.ROLE_ID = #{role_id,jdbcType=INTEGER}
+	)
+	</if>
+	<if test="user_name != null and user_name != ''">
+		and instr(u.user_name , #{user_name,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="user_phone != null and user_phone != ''">
+		and instr(u.user_phone , #{user_phone,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="user_email != null and user_email != ''">
+		and instr(u.user_email , #{user_email,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="user_lock != null">
+		and u.user_lock = #{user_lock,jdbcType=TINYINT}
+	</if>
+	<if test="user_status != null">
+		and u.user_status = #{user_status,jdbcType=TINYINT}
+	</if>
+	order by u.user_create_time desc
+  </select>
+  
+  <insert id="insertRole" parameterType="com.yinhai.ec.common.domain.UserRolesDomain" useGeneratedKeys="true" keyProperty="roleId">
+  	insert into hy_user_roles
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleName != null" >
+        ROLE_NAME, <!-- 角色名 -->
+      </if>
+      <if test="roleString != null" >
+        ROLE_STRING, <!-- 角色验证字符 -->
+      </if>
+      <if test="roleType != null" >
+        ROLE_TYPE, <!-- 角色类型(1.系统角色;2.应用角色) -->
+      </if>
+      <if test="roleStatus != null" >
+        ROLE_STATUS, <!-- 角色状态（1.有效;0.无效） -->
+      </if>
+      <if test="roleCreater != null" >
+        ROLE_CREATER, <!-- 角色创建人 -->
+      </if>
+     <!--  <if test="roleCreateTime != null" > -->
+        ROLE_CREATE_TIME <!-- 角色创建时间 -->
+     <!--  </if> -->
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR}, <!-- 角色名 -->
+      </if>
+      <if test="roleString != null" >
+        #{roleString,jdbcType=VARCHAR}, <!-- 角色验证字符 -->
+      </if>
+      <if test="roleType != null" >
+        #{roleType,jdbcType=TINYINT}, <!-- 角色类型(1.系统角色;2.应用角色) -->
+      </if>
+      <if test="roleStatus != null" >
+        #{roleStatus,jdbcType=TINYINT}, <!-- 角色状态（1.有效;0.无效） -->
+      </if>
+      <if test="roleCreater != null" >
+        #{roleCreater,jdbcType=INTEGER}, <!-- 角色创建人 0表示系统默认 -->
+      </if>
+     <!--  <if test="roleCreateTime != null" > -->
+        now() <!-- 角色创建人时间-->
+     <!--  </if> -->
+    </trim>
+  </insert>
+  
+  <insert id="insertRoleUser" parameterType="pp">
+      insert into hy_user_role_relation (user_id,role_id) values(#{user_id,jdbcType=INTEGER},#{role_id,jdbcType=INTEGER})
+  </insert>
+  
+  <!-- 删除单个用户角色关系表 -->
+  <delete id="deleteRoleUser" parameterType="pp">
+  	delete from  hy_user_role_relation 
+	where  role_id = #{role_id,jdbcType=INTEGER}
+	and user_id = #{user_id,jdbcType=INTEGER}
+  </delete>
+  
+  <update id="updateRoleByRoleId" parameterType="com.yinhai.ec.common.domain.UserRolesDomain" >
+    update hy_user_roles
+    <set >
+      <if test="roleName != null" >
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR}, <!-- 角色名 -->
+      </if>
+      <if test="roleString != null" >
+        ROLE_STRING = #{roleString,jdbcType=VARCHAR}, <!-- 角色验证字符 -->
+      </if>
+      <if test="roleType != null" >
+        ROLE_TYPE = #{roleType,jdbcType=TINYINT}, <!-- 角色类型(1.系统角色;2.应用角色) -->
+      </if>
+      <if test="roleStatus != null" >
+        ROLE_STATUS = #{roleStatus,jdbcType=TINYINT}  <!-- 角色状态（1.有效;0.无效） -->
+      </if>
+      <!-- <if test="roleCreater != null" >
+        ROLE_CREATER = #{roleCreater,jdbcType=INTEGER},角色创建人
+      </if> -->
+    </set>
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.UserRolesDomain" >
+    <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ROLE_STRING" property="roleString" jdbcType="VARCHAR" />
+    <result column="ROLE_TYPE" property="roleType" jdbcType="TINYINT" />
+    <result column="ROLE_STATUS" property="roleStatus" jdbcType="TINYINT" />
+    <result column="ROLE_CREATER" property="roleCreater" jdbcType="INTEGER" />
+    <result column="ROLE_CREATE_TIME" property="roleCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="querySingleRole" parameterType="integer" resultMap="BaseResultMap">
+    select 
+    	 ROLE_ID, 
+    	 ROLE_NAME,
+    	 ROLE_STRING,
+    	 ROLE_TYPE,
+    	 ROLE_STATUS,
+    	 ROLE_CREATER,
+    	 ROLE_CREATE_TIME
+    from hy_user_roles
+    where role_ID = #{value,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询角色全部信息 包括部门信息 -->
+  <select id="queryFullRole" parameterType="integer" resultType="map">
+    SELECT
+		hur.role_id,
+		hur.role_name,
+		hur.role_string,
+		hur.role_type,
+		hur.role_status,
+		hur.role_creater,
+		hur.role_create_time,
+		hooo.org_id,
+		hooo.org_name,
+		hooo.org_id_path,
+		hooo.org_name_path
+	FROM
+		hy_user_roles hur
+	LEFT JOIN (
+		SELECT
+			ho.ORG_ID,
+			ho.ORG_NAME,
+			ho.ORG_ID_PATH,
+			ho.ORG_NAME_PATH,
+			hor.ROLE_ID
+		FROM
+			hy_org_roles hor,
+			hy_org ho
+		WHERE
+			hor.ORG_ID = ho.ORG_ID
+	) hooo ON hur.ROLE_ID = hooo.ROLE_ID
+	WHERE
+		hur.role_ID = #{value,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 删除用户角色关系表 -->
+  <delete id="deleteRelationByRoleId" parameterType="com.yinhai.ec.common.domain.UserRolesDomain">
+  	delete from  hy_user_role_relation 
+	where  role_id = #{roleId,jdbcType=INTEGER}    <!-- 角色ID -->
+  </delete>
+  
+  <!-- 删除角色权限表 -->
+  <delete id="deleteAuthByRoleId" parameterType="com.yinhai.ec.common.domain.UserRolesDomain">
+  	delete  from  hy_menu_auth
+	where  role_id = #{roleId,jdbcType=INTEGER}    <!-- 角色ID -->
+  </delete>
+  
+  <!-- 验证角色是否在角色关系中 -->
+  <select id="selectCountFromRelation" parameterType="integer" resultType="integer">
+  	select count(1) from hy_user_role_relation
+  	where ROLE_ID = #{role_id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 验证角色名是否在角色权限表中 -->
+  <select id="selectCountFromAuth" parameterType="integer" resultType="integer">
+  	select count(1) from hy_menu_auth
+  	where ROLE_ID = #{role_id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 验证角色名是否重复 -->
+  <select id="selectCountFromRoleName" parameterType="map" resultType="integer">
+  	select count(1) from hy_user_roles
+  	where ROLE_NAME = #{role_name,jdbcType=VARCHAR}
+  	and ROLE_STATUS = 1
+  	<if test="role_id != null and role_id != ''">
+  	    and role_id != #{role_id,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 验证角色字符串是否重复 -->
+  <select id="selectCountFromRoleString" parameterType="map" resultType="integer">
+  	select count(1) from hy_user_roles
+  	where ROLE_STRING = #{role_string,jdbcType=VARCHAR}
+  	and ROLE_STATUS = 1
+  	<if test="role_id != null and role_id != ''">
+  	    and role_id != #{role_id,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 查询单个角色下的所有人员 -->
+  <select id="selectRoleUsersByRoleId" parameterType="integer" resultType="map">
+  	select
+		hu.USER_ID,
+		hu.USER_NAME,
+		hu.USER_EMAIL,
+		hu.USER_LOGIN,
+		hu.USER_PHONE,
+		hu.USER_SEX
+	from hy_user_role_relation hr LEFT JOIN hy_user hu on hr.USER_ID = hu.USER_ID
+	where hr.ROLE_ID = #{value,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 插入部门角色关系 -->
+  <insert id="insertOrgRoles" parameterType="pp" >
+  	insert into hy_org_roles (org_id,role_id) values(#{org_id,jdbcType=INTEGER},#{role_id,jdbcType=INTEGER})
+  </insert>
+  
+  <!-- 根据org_id 删除关系 -->
+  <delete id="deleteOrgRolesByRoleId" parameterType="pp">
+      delete from hy_org_roles where role_id = #{role_id,jdbcType=INTEGER}
+  </delete>
+</mapper>

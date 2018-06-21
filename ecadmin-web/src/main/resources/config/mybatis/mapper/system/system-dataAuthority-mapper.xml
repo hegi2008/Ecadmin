@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.system.dataAuthority" >
+  <!-- 数据权限管理相关SQL -->
+  
+  <!-- 获取系统框架表 -->
+  <select id="getSystemDbTables" parameterType="map" resultType="map">
+  	SELECT
+  		<if test="db_name != null and db_name != ''">
+  		#{db_name,jdbcType=VARCHAR} AS db_name,
+  		</if>
+		TABLE_NAME as table_name,
+		TABLE_COMMENT as table_comment
+	FROM
+		INFORMATION_SCHEMA. TABLES
+	WHERE 1 = 1
+	<if test="db_name != null and db_name != ''">
+  		AND TABLE_SCHEMA = #{db_name,jdbcType=VARCHAR}
+  	</if>
+	AND table_type = 'base table' 
+	<![CDATA[ AND INSTR(TABLE_NAME,'hy_') > 0 ]]>
+  </select>
+  
+  <!-- 获取除系统表之外的业务相关表 -->
+  <select id="getAppDbTables" parameterType="map" resultType="map">
+  	SELECT
+  		<if test="db_name != null and db_name != ''">
+  		#{db_name,jdbcType=VARCHAR} AS db_name,
+  		</if>
+		TABLE_NAME as table_name,
+		TABLE_COMMENT as table_comment
+	FROM
+		INFORMATION_SCHEMA. TABLES
+	WHERE 1 = 1
+	<if test="db_name != null and db_name != ''">
+  		AND TABLE_SCHEMA = #{db_name,jdbcType=VARCHAR}
+  	</if>
+	AND table_type = 'base table' 
+	<![CDATA[ AND INSTR(TABLE_NAME,'hy_') < 0 ]]>
+  </select>
+  
+  <!-- 获取数据库名称 -->
+  <select id="getDbName" resultType="string">
+  	SELECT DATABASE()
+  </select>
+  
+  <select id="getDataAuthorityByRoleIdAndDataType" parameterType="map" resultType="map">
+  	select
+  		table_name,
+  		table_schema
+  	from hy_data_authority_${type}
+  	where role_id = #{role_id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 批量插入角色数据权限 -->
+  <insert id="inserRoleDataAuthorityBatch" parameterType="map">
+	insert into hy_data_authority_${type} (ROLE_ID, TABLE_NAME, TABLE_SCHEMA)
+      values
+      <foreach collection="list" item="item" separator=",">
+      	(#{item.role_id,jdbcType=INTEGER}, #{item.table_name,jdbcType=VARCHAR}, 
+	      #{item.table_schema,jdbcType=VARCHAR}
+	      )
+      </foreach>
+  </insert>
+  
+  <delete id="deleteDataAuthoritysByRoleId" parameterType="map">
+  	delete from hy_data_authority_${type} where role_id = #{role_id,jdbcType=INTEGER}
+  </delete>
+</mapper>

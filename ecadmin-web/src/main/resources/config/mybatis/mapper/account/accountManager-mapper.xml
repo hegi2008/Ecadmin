@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.account.manager" >
+  
+  <!-- 账户管理分页sql -->
+  <select id="queryListPageAccountManager" parameterType="pp" resultType="map">
+  	select
+		u.yad901,
+		u.yad961,
+		u.des,
+		u.create_time,
+		u.update_time
+	from
+		yw_account u
+	where 1=1
+	<if test="yad901 != null and yad901 != ''">
+		and instr(u.yad901 , #{yad901,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="yad961 != null and yad961 != ''">
+		and instr(u.yad961 , #{yad961,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="startDate != null and endDate != null">
+		and u.create_time BETWEEN DATE_FORMAT(#{startDate,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+		and DATE_FORMAT(#{endDate,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+	</if>
+	order by u.create_time desc
+  </select>
+  
+  <insert id="insertAccount" parameterType="com.yinhai.shh.account.domain.AccountDomain">
+  	insert into yw_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="yad901 != null" >
+          YAD901,
+      </if>
+      <if test="yad961 != null" >
+          yad961,
+      </if>
+      <if test="des != null" >
+          DES,
+      </if>
+          CREATE_TIME,
+          UPDATE_TIME
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="yad901 != null" >
+        #{yad901,jdbcType=VARCHAR},
+      </if>
+      <if test="yad961 != null" >
+        #{yad961,jdbcType=TINYINT},
+      </if>
+      <if test="des != null" >
+        #{des,jdbcType=VARCHAR},
+      </if>
+        now(),
+        now()
+    </trim>
+  </insert>
+  
+  <update id="updateAccountByAccountId" parameterType="com.yinhai.shh.account.domain.AccountDomain" >
+    update yw_account
+    <set >
+        <if test="yad901 != null" >
+            YAD901 = #{yad901,jdbcType=VARCHAR},
+        </if>
+        <if test="yad961 != null" >
+            YAD961 = #{yad961,jdbcType=VARCHAR},
+        </if>
+        <if test="des != null" >
+            DES = #{des,jdbcType=VARCHAR},
+        </if>
+        UPDATE_TIME = now()
+    </set>
+    where YAD901 = #{yad901,jdbcType=VARCHAR}
+      AND YAD961 = #{yad961,jdbcType=VARCHAR}
+  </update>
+  
+  <resultMap id="BaseResultMap" type="com.yinhai.shh.account.domain.AccountDomain" >
+    <result column="YAD901" property="yad901" jdbcType="VARCHAR" />
+    <result column="YAD961" property="yad961" jdbcType="VARCHAR" />
+    <result column="DES" property="des" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="create_time" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="update_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="querySingleAccount" parameterType="pp" resultMap="BaseResultMap">
+    select 
+    	 YAD901, YAD961, DES, CREATE_TIME, UPDATE_TIME
+    from yw_account
+    where YAD901 = #{yad901,jdbcType=VARCHAR}
+      AND YAD961 = #{yad961,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

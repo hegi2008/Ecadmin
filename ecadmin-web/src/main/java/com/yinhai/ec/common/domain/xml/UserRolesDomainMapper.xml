@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.xml.UserRolesDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.UserRolesDomain" >
+    <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ROLE_STRING" property="roleString" jdbcType="VARCHAR" />
+    <result column="ROLE_TYPE" property="roleType" jdbcType="TINYINT" />
+    <result column="ROLE_STATUS" property="roleStatus" jdbcType="TINYINT" />
+    <result column="ROLE_CREATER" property="roleCreater" jdbcType="INTEGER" />
+    <result column="ROLE_CREATE_TIME" property="roleCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ROLE_ID, ROLE_NAME, ROLE_STRING, ROLE_TYPE, ROLE_STATUS, ROLE_CREATER, ROLE_CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hy_user_roles
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hy_user_roles
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.UserRolesDomain" >
+    insert into hy_user_roles (ROLE_ID, ROLE_NAME, ROLE_STRING, 
+      ROLE_TYPE, ROLE_STATUS, ROLE_CREATER, 
+      ROLE_CREATE_TIME)
+    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleString,jdbcType=VARCHAR}, 
+      #{roleType,jdbcType=TINYINT}, #{roleStatus,jdbcType=TINYINT}, #{roleCreater,jdbcType=INTEGER}, 
+      #{roleCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.UserRolesDomain" >
+    insert into hy_user_roles
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="roleName != null" >
+        ROLE_NAME,
+      </if>
+      <if test="roleString != null" >
+        ROLE_STRING,
+      </if>
+      <if test="roleType != null" >
+        ROLE_TYPE,
+      </if>
+      <if test="roleStatus != null" >
+        ROLE_STATUS,
+      </if>
+      <if test="roleCreater != null" >
+        ROLE_CREATER,
+      </if>
+      <if test="roleCreateTime != null" >
+        ROLE_CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleString != null" >
+        #{roleString,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        #{roleType,jdbcType=TINYINT},
+      </if>
+      <if test="roleStatus != null" >
+        #{roleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="roleCreater != null" >
+        #{roleCreater,jdbcType=INTEGER},
+      </if>
+      <if test="roleCreateTime != null" >
+        #{roleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yinhai.ec.common.domain.UserRolesDomain" >
+    update hy_user_roles
+    <set >
+      <if test="roleName != null" >
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleString != null" >
+        ROLE_STRING = #{roleString,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        ROLE_TYPE = #{roleType,jdbcType=TINYINT},
+      </if>
+      <if test="roleStatus != null" >
+        ROLE_STATUS = #{roleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="roleCreater != null" >
+        ROLE_CREATER = #{roleCreater,jdbcType=INTEGER},
+      </if>
+      <if test="roleCreateTime != null" >
+        ROLE_CREATE_TIME = #{roleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yinhai.ec.common.domain.UserRolesDomain" >
+    update hy_user_roles
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      ROLE_STRING = #{roleString,jdbcType=VARCHAR},
+      ROLE_TYPE = #{roleType,jdbcType=TINYINT},
+      ROLE_STATUS = #{roleStatus,jdbcType=TINYINT},
+      ROLE_CREATER = #{roleCreater,jdbcType=INTEGER},
+      ROLE_CREATE_TIME = #{roleCreateTime,jdbcType=TIMESTAMP}
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </update>
+</mapper>

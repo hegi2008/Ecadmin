@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans       
+     http://www.springframework.org/schema/beans/spring-beans.xsd        
+     http://code.alibabatech.com/schema/dubbo        
+     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="ecadmin_provider" />
+    <!-- （公用配置：服务提供者/消费者均需要配置）serialization 协议序列化方式，使用kryo -->
+    <dubbo:protocol name="dubbo" serialization="kryo"/>
+	<!-- 服务消费者缺省值配置 不引用（消费）服务，则无需配置 -->
+	<dubbo:consumer timeout="30000" retries="0"/>
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<!-- <dubbo:registry protocol="zookeeper" address="192.168.10.161:2181" /> -->
+    <dubbo:registry protocol="zookeeper" address="192.168.18.107:2181,192.168.18.108:2181,192.168.18.110:2181" />
+    <!-- 从注册中心发现监控中心地址 -->
+    <dubbo:monitor protocol="registry" />
+    <dubbo:service interface="com.yinhai.xtpt.test.service.DubboTest" ref="dubboTest" token="true"></dubbo:service>
+    <bean id="dubboTest" class="com.yinhai.xtpt.test.service.impl.DubboTestImpl"></bean>
+</beans>

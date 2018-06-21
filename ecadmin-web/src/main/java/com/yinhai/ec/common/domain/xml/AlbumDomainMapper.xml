@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.xml.AlbumDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.AlbumDomain" >
+    <id column="ALBUM_ID" property="albumId" jdbcType="INTEGER" />
+    <result column="ALBUM_NAME" property="albumName" jdbcType="VARCHAR" />
+    <result column="ALBUM_COVER" property="albumCover" jdbcType="INTEGER" />
+    <result column="ALBUM_TYPE" property="albumType" jdbcType="TINYINT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_USER" property="createUser" jdbcType="INTEGER" />
+    <result column="ALBUM_STATUS" property="albumStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ALBUM_ID, ALBUM_NAME, ALBUM_COVER, ALBUM_TYPE, CREATE_TIME, CREATE_USER, ALBUM_STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hy_album
+    where ALBUM_ID = #{albumId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hy_album
+    where ALBUM_ID = #{albumId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.AlbumDomain" >
+    insert into hy_album (ALBUM_ID, ALBUM_NAME, ALBUM_COVER, 
+      ALBUM_TYPE, CREATE_TIME, CREATE_USER, 
+      ALBUM_STATUS)
+    values (#{albumId,jdbcType=INTEGER}, #{albumName,jdbcType=VARCHAR}, #{albumCover,jdbcType=INTEGER}, 
+      #{albumType,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
+      #{albumStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.AlbumDomain" >
+    insert into hy_album
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="albumId != null" >
+        ALBUM_ID,
+      </if>
+      <if test="albumName != null" >
+        ALBUM_NAME,
+      </if>
+      <if test="albumCover != null" >
+        ALBUM_COVER,
+      </if>
+      <if test="albumType != null" >
+        ALBUM_TYPE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER,
+      </if>
+      <if test="albumStatus != null" >
+        ALBUM_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="albumId != null" >
+        #{albumId,jdbcType=INTEGER},
+      </if>
+      <if test="albumName != null" >
+        #{albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumCover != null" >
+        #{albumCover,jdbcType=INTEGER},
+      </if>
+      <if test="albumType != null" >
+        #{albumType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="albumStatus != null" >
+        #{albumStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yinhai.ec.common.domain.AlbumDomain" >
+    update hy_album
+    <set >
+      <if test="albumName != null" >
+        ALBUM_NAME = #{albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumCover != null" >
+        ALBUM_COVER = #{albumCover,jdbcType=INTEGER},
+      </if>
+      <if test="albumType != null" >
+        ALBUM_TYPE = #{albumType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="albumStatus != null" >
+        ALBUM_STATUS = #{albumStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where ALBUM_ID = #{albumId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yinhai.ec.common.domain.AlbumDomain" >
+    update hy_album
+    set ALBUM_NAME = #{albumName,jdbcType=VARCHAR},
+      ALBUM_COVER = #{albumCover,jdbcType=INTEGER},
+      ALBUM_TYPE = #{albumType,jdbcType=TINYINT},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_USER = #{createUser,jdbcType=INTEGER},
+      ALBUM_STATUS = #{albumStatus,jdbcType=TINYINT}
+    where ALBUM_ID = #{albumId,jdbcType=INTEGER}
+  </update>
+</mapper>

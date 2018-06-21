@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.album.manager" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.AlbumDomain" >
+    <id column="ALBUM_ID" property="albumId" jdbcType="INTEGER" />
+    <result column="ALBUM_NAME" property="albumName" jdbcType="VARCHAR" />
+    <result column="ALBUM_COVER" property="albumCover" jdbcType="INTEGER" />
+    <result column="ALBUM_TYPE" property="albumType" jdbcType="TINYINT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_USER" property="createUser" jdbcType="INTEGER" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="ALBUM_STATUS" property="albumStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ALBUM_ID, ALBUM_NAME, ALBUM_COVER, ALBUM_TYPE, CREATE_TIME, CREATE_USER, CREATE_USER_NAME, ALBUM_STATUS
+  </sql>
+  <select id="selectAlbumList" resultType="map">
+    SELECT
+		a.ALBUM_ID as albumId,
+		a.ALBUM_NAME as albumName,
+		a.ALBUM_COVER as albumCover,
+		a.ALBUM_TYPE as albumType,
+		a.CREATE_TIME createTime,
+		a.CREATE_USER as createUser,
+		a.CREATE_USER_NAME as createUserName,
+		a.ALBUM_STATUS as albumStatus,
+		i.IMG_PATH as albumCoverPath
+	FROM
+	hy_album AS a LEFT JOIN hy_album_img i ON a.ALBUM_COVER = i.IMG_ID
+	WHERE a.ALBUM_STATUS = 1
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hy_album
+    where ALBUM_ID = #{albumId,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.AlbumDomain" >
+    insert into hy_album
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="albumId != null" >
+        ALBUM_ID,
+      </if>
+      <if test="albumName != null" >
+        ALBUM_NAME,
+      </if>
+      <if test="albumCover != null" >
+        ALBUM_COVER,
+      </if>
+      <if test="albumType != null" >
+        ALBUM_TYPE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER,
+      </if>
+      <if test="createUserName != null" >
+        CREATE_USER_NAME,
+      </if>
+      <if test="albumStatus != null" >
+        ALBUM_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="albumId != null" >
+        #{albumId,jdbcType=INTEGER},
+      </if>
+      <if test="albumName != null" >
+        #{albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumCover != null" >
+        #{albumCover,jdbcType=INTEGER},
+      </if>
+      <if test="albumType != null" >
+        #{albumType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="createUserName != null" >
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumStatus != null" >
+        #{albumStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateAlbumSelective" parameterType="com.yinhai.ec.common.domain.AlbumDomain" >
+    update hy_album
+    <set >
+      <if test="albumName != null" >
+        ALBUM_NAME = #{albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumCover != null" >
+        ALBUM_COVER = #{albumCover,jdbcType=INTEGER},
+      </if>
+      <if test="albumType != null" >
+        ALBUM_TYPE = #{albumType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="createUserName != null" >
+        CREATE_USER_NAME = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="albumStatus != null" >
+        ALBUM_STATUS = #{albumStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where ALBUM_ID = #{albumId,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="AlbumImgMap" type="com.yinhai.ec.common.domain.AlbumImgDomain" >
+    <id column="IMG_ID" property="imgId" jdbcType="INTEGER" />
+    <result column="ALBUM_ID" property="albumId" jdbcType="INTEGER" />
+    <result column="IMG_PATH" property="imgPath" jdbcType="VARCHAR" />
+    <result column="IMG_NAME" property="imgName" jdbcType="VARCHAR" />
+    <result column="IMG_SIZE" property="imgSize" jdbcType="INTEGER" />
+    <result column="UPLOAD_TIME" property="uploadTime" jdbcType="TIMESTAMP" />
+    <result column="UPLOAD_USER" property="uploadUser" jdbcType="INTEGER" />
+    <result column="IMG_STATUS" property="imgStatus" jdbcType="TINYINT" />
+  </resultMap>
+ 
+  <sql id="AlbumImg_List" >
+    IMG_ID, ALBUM_ID, IMG_PATH, IMG_NAME, IMG_SIZE, UPLOAD_TIME, UPLOAD_USER, IMG_STATUS
+  </sql>
+  
+  <select id="selectAlbumImgByPrimary" resultMap="AlbumImgMap" parameterType="com.yinhai.ec.common.domain.AlbumImgDomain" >
+    select 
+    <include refid="AlbumImg_List" />
+    from hy_album_img
+    where IMG_ID = #{imgId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAlbumImgsList" resultMap="AlbumImgMap" parameterType="com.yinhai.ec.common.domain.AlbumDomain" >
+    select 
+    <include refid="AlbumImg_List" />
+    from hy_album_img
+    where ALBUM_ID = #{albumId,jdbcType=INTEGER}
+    and IMG_STATUS = 1
+  </select>
+  
+  <insert id="insertAlbumImg" parameterType="com.yinhai.ec.common.domain.AlbumImgDomain" >
+    insert into hy_album_img
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="imgId != null" >
+        IMG_ID,
+      </if>
+      <if test="albumId != null" >
+        ALBUM_ID,
+      </if>
+      <if test="imgPath != null" >
+        IMG_PATH,
+      </if>
+      <if test="imgName != null" >
+        IMG_NAME,
+      </if>
+      <if test="imgSize != null" >
+        IMG_SIZE,
+      </if>
+      <if test="uploadTime != null" >
+        UPLOAD_TIME,
+      </if>
+      <if test="uploadUser != null" >
+        UPLOAD_USER,
+      </if>
+      <if test="imgStatus != null" >
+        IMG_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="imgId != null" >
+        #{imgId,jdbcType=INTEGER},
+      </if>
+      <if test="albumId != null" >
+        #{albumId,jdbcType=INTEGER},
+      </if>
+      <if test="imgPath != null" >
+        #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="imgName != null" >
+        #{imgName,jdbcType=VARCHAR},
+      </if>
+      <if test="imgSize != null" >
+        #{imgSize,jdbcType=INTEGER},
+      </if>
+      <if test="uploadTime != null" >
+        #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uploadUser != null" >
+        #{uploadUser,jdbcType=INTEGER},
+      </if>
+      <if test="imgStatus != null" >
+        #{imgStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="deleteAlbumImgs" parameterType="com.yinhai.ec.common.domain.AlbumDomain" >
+    update hy_album_img
+    set IMG_STATUS = 0
+    where ALBUM_ID = #{albumId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateAlbumImgByPrimaryKeySelective" parameterType="com.yinhai.ec.common.domain.AlbumImgDomain" >
+    update hy_album_img
+    <set >
+      <if test="albumId != null" >
+        ALBUM_ID = #{albumId,jdbcType=INTEGER},
+      </if>
+      <if test="imgPath != null" >
+        IMG_PATH = #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="imgName != null" >
+        IMG_NAME = #{imgName,jdbcType=VARCHAR},
+      </if>
+      <if test="imgSize != null" >
+        IMG_SIZE = #{imgSize,jdbcType=INTEGER},
+      </if>
+      <if test="uploadTime != null" >
+        UPLOAD_TIME = #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uploadUser != null" >
+        UPLOAD_USER = #{uploadUser,jdbcType=INTEGER},
+      </if>
+      <if test="imgStatus != null" >
+        IMG_STATUS = #{imgStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where IMG_ID = #{imgId,jdbcType=INTEGER}
+  </update>
+</mapper>

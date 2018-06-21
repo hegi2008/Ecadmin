@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Responsive Nav &middot; Advanced Left Navigation Demo</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+<body>
+<div id="content"></div>
+<audio id="audio" src="./sound/sound.wav" style="display: none;"></audio>
+<script src="./sockjs/sockjs-0.3.min.js"></script>
+<script src="../WEUI/lib/jquery-2.1.4.js"></script>
+<script src="../UI/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="./reactjs/lodash.js"></script>
+<script src="./reactjs/signals.min.js"></script>
+<script src="./reactjs/react-with-addons.min.js"></script>
+<script src="./reactjs/JSXTransformer.js"></script>
+<script src="./reactjs/chatEvent.js"></script>
+<script type="text/jsx" src="./component/ChatList.js"></script>
+<script type="text/jsx">
+	
+	React.render(<FriendsBox url="http://localhost:8080/ecadmin-web/chat/online" />,document.getElementById("content"));
+</script>
+<script>
+	
+</script>
+<script type="text/javascript">
+	ConnectionWebsocket();
+	var webSocket;
+	function ConnectionWebsocket() {
+		var wspath = "ws://localhost:8080/ecadmin-web/testSocket";
+		var wssockpath = "http://localhost:8080/ecadmin-web/sockjs/testSocket"
+		//进行websocket判断选择
+		if ('WebSocket' in window) {
+			webSocket = new WebSocket(wspath);
+		} else if ('MozWebSocket' in window) {
+			webSocket = new MozWebSocket(wspath);
+		} else {
+			alert(111);
+			webSocket = new SockJS(wssockpath,undefined,{protocols_whitelist: ['jsonp-polling']});
+		}
+		webSocket.onerror = function(event) {
+			onError(event)
+		};
+	
+		webSocket.onopen = function(event) {
+			onOpen(event)
+		};
+	
+		webSocket.onmessage = function(event) {
+			onMessage(event)
+		};
+   		webSocket.onclose = function(event){
+       		//alert("close");
+   		};
+	}
+	
+	//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+	window.onbeforeunload = function(){
+       closeWebSocket();
+    }
+    
+    //关闭连接
+    function closeWebSocket(){
+        if(webSocket && (webSocket.readyState == 0 || webSocket.readyState == 1)){
+			webSocket.close();
+		}
+    }
+
+	//接收消息并设置信息
+	function onMessage(event) {
+		var data = $.parseJSON(event.data);
+		if(data.id && data.online!= undefined){
+			if(data.online){
+				$.ajax({
+					url:'/ecadmin-web/chat/user',
+					type:'POST',
+					data:{'id':data.id},
+					success:function(result){
+						//触发更新好友列表
+						chat.updateFriend.dispatch(data,result);
+					}
+				});
+			}else{
+				//触发更新好友列表
+				chat.updateFriend.dispatch(data);
+			}
+		}else{
+			chat.message.dispatch(data.id,data);
+		}
+	}
+
+	//连接
+	function onOpen(event) {
+		//聊天信息
+			chat.sendMessage.add(function(msg){
+				if(_.isObject(msg)){
+					msg = JSON.stringify(msg);
+				}
+				webSocket.send(msg);
+			});
+	}
+
+	function onError(event) {
+		alert(event.data);
+	}
+	//启动任务
+	function startSend() {
+		document.getElementById('wsdata').innerHTML = '请稍候，正在监听...';
+		webSocket.send('23232');
+		return false;
+	}
+</script>
+</body>
+</html>

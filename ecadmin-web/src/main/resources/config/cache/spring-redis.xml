@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+	<bean id="redisClient" class="com.yinhai.ec.base.redis.RedisClient" init-method="initialize">
+		<property name="maxActive" value="${maxActive}" />
+		<property name="maxIdle" value="${maxIdle}" />
+		<property name="maxWait" value="${maxWait}" />
+		<property name="testOnBorrow" value="${testOnBorrow}" />
+		<property name="testOnReturn" value="${testOnReturn}"></property>
+		<property name="timeOut" value="${redis.timeout}"></property>
+		<property name="writeHost" value="${redisServerWriteIp}"></property>
+		<property name="readHost" value="${redisServerReadIp}"></property>
+		<property name="writePort" value="${redisServerWritePort}"></property>
+		<property name="readPort" value="${redisServerReadPort}"></property>
+		<property name="password" value="${redis.password}"></property>
+	</bean>
+	
+	<!-- value为对象 -->
+	<bean id="redisObjAdapter" class="com.yinhai.ec.base.redis.RedisObjAdapter">
+		<property name="redisClient" ref="redisClient"></property>
+	</bean>
+	
+	<!-- value为String -->
+	<bean id="redisAdapter" class="com.yinhai.ec.base.redis.RedisAdapter">
+		<property name="redisClient" ref="redisClient"></property>
+	</bean>
+</beans>

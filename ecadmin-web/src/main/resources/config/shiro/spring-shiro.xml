@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+
+   	<!-- session监听器 -->
+	<bean id="sessionListener" class="com.yinhai.ec.base.listener.BaseSessionListener"/>
+   	
+   	<!-- 定义会话验证调度器，用于定期的验证会话是否已过期，如果过期将停止会话 -->
+   	<bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+		<property name="sessionValidationInterval" value="60000"/>
+		<property name="sessionManager" ref="shiroSessionManager"/>
+   	</bean>
+   	
+   	<!-- 自己管理的会话cookie -->
+   	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<property name="name" value="HYSESSIONID"/>
+		<property name="httpOnly" value="true"/>
+		<property name="maxAge" value="-1"/><!-- 生命周期由浏览器安排,浏览器关机则失效 -->
+   	</bean>
+
+	<!-- 使用MapCache实现 -->
+	<bean id="sessionDao" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+	</bean>
+
+   	<!-- sessionManager用于Web环境的实现，可以替代ServletContainerSessionManager，自己维护着会话，直接废弃了Servlet容器的会话管理。 -->
+   	<bean id="shiroSessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionDAO" ref="sessionDao"/>
+   		<!-- 会话过期时间 半天(12小时) 默认30分钟 -->
+		<property name="globalSessionTimeout" value="${system.sessionTimeOut:18000000}"/>
+		<property name="sessionIdCookie" ref="sessionIdCookie"/>
+   		<property name="sessionListeners">
+   			<list>
+   				<ref bean="sessionListener"/>
+   			</list>
+   		</property>
+   		<!-- 开启会话验证调度器，用于定期的验证会话是否已过期，如果过期将停止会话 -->
+   		<!-- <property name="sessionValidationScheduler" ref="sessionValidationScheduler"></property> -->
+		<property name="sessionValidationSchedulerEnabled" value="false"/>
+   	</bean>
+    
+    <!-- 自定义用户密码验证 -->
+	<bean id="myCredentialsMatcher" class="com.yinhai.ec.base.shiro.realm.BaseCredentialsMatcher"/>
+    
+    <!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的类 -->  
+    <bean id="myRealm" class="com.yinhai.ec.base.shiro.realm.BaseRealm">
+		<property name="credentialsMatcher" ref="myCredentialsMatcher"/>
+    </bean>
+    
+   	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->  
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+   	<!-- 开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证 -->  
+	<!-- 配置以下两个bean即可实现此功能 -->  
+	<!-- Enable Shiro Annotations for Spring-configured beans. Only run after the lifecycleBeanProcessor has run -->  
+   	<!-- <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">  
+    	<property name="proxyTargetClass" value="true" />   
+    </bean> -->
+    <!-- <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">  
+        <property name="securityManager" ref="securityManager"/>  
+    </bean> -->
+   	
+    <!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->  
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="sessionManager" ref="shiroSessionManager"/>
+		<property name="realm" ref="myRealm"/>
+    </bean>
+    
+    <!-- 定义强制退出拦截器 -->
+	<bean id="myForceLogoutFilter" class="com.yinhai.ec.base.filter.BaseForceLogoutFilter"/>
+    <!-- 定义URL访问权限拦截器 -->
+	<bean id="myAccessCheckFilter" class="com.yinhai.ec.base.filter.BaseAccessCheckFilter"/>
+    
+    <!-- Web应用中,Shiro可控制的Web请求必须经过Shiro主过滤器的拦截,Shiro对基于Spring的Web应用提供了完美的支持 -->  
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"/>
+		<property name="loginUrl" value="/login"/>
+		<property name="successUrl" value="/index"/>
+		<property name="unauthorizedUrl" value="/UI/accessdenied.jsp"/>
+    	<property name="filters">
+    		<map>
+				<entry key="myForceLogoutFilter" value-ref="myForceLogoutFilter"/>
+				<entry key="myAccessCheckFilter" value-ref="myAccessCheckFilter"/>
+    		</map>
+    	</property>
+    	<property name="filterChainDefinitions">
+    		<value>
+				/UI/**						= anon
+				/images/**					= anon
+				/statics/**					= anon
+				/doLogin					= anon
+				/changeUserPassword			= anon
+				/forceLogout				= anon
+				/system/common/*			= anon
+				<!-- 这下面添加需要进行URL访问控制的地址 -->
+	           	/admin/**					= myForceLogoutFilter,myAccessCheckFilter
+	           	/system/**					= myForceLogoutFilter,myAccessCheckFilter
+	           	/**							= authc,myForceLogoutFilter
+			</value>
+    	</property>
+    </bean>
+</beans>

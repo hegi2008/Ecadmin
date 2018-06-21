@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+   	<!-- shiro与cas集成,用于查询用户的权限 -->
+   	<bean id="shiroCasRealm" class="com.yinhai.ec.sso.ShiroCasRealm">
+   		<property name="cachingEnabled" value="true" />  
+   		<property name="cacheManager" ref="shiroCacheManager"></property>
+        <property name="authenticationCachingEnabled" value="true" />  
+        <property name="authenticationCacheName" value="authenticationCache" />  
+        <property name="authorizationCachingEnabled" value="true" />  
+        <property name="authorizationCacheName" value="authorizationCache" />  
+        <property name="casServerUrlPrefix" value="${sso.casServerUrlPrefix}"/>
+        <property name="casService" value="${sso.casService}"/>
+   	</bean>
+   	
+   	<bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory" />
+   	<!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->  
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroCasRealm"></property>
+	    <property name="subjectFactory" ref="casSubjectFactory" /> 
+    </bean>
+    
+    <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->  
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
+	    <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager" />  
+	    <property name="arguments" ref="securityManager" />  
+	</bean>  
+   	
+   	<!-- shiro 与 cas 集成最主要的filter 负责ticket验证和返回username接收(登陆验证) -->
+   	<bean id="casFilter" class="com.yinhai.ec.sso.ShiroCasFilter">  
+	    <property name="failureUrl" value="${sso.failureUrl}" />  
+	</bean>
+	
+	<!-- 退出登录拦截器 转发到sso地址 -->
+	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+	    <property name="redirectUrl" value="${sso.logout.url}"/>
+	</bean>
+	
+	<!-- 定义URL访问权限拦截器 -->
+    <bean id="myAccessCheckFilter" class="com.yinhai.ec.base.filter.BaseAccessCheckFilter"></bean>
+	
+   	<!-- Web应用中,Shiro可控制的Web请求必须经过Shiro主过滤器的拦截,Shiro对基于Spring的Web应用提供了完美的支持 -->  
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+    	<property name="securityManager" ref="securityManager"></property>
+    	<property name="loginUrl" value="${sso.login.url}"></property>
+    	<property name="successUrl" value="${sso.login.success.url}"></property>
+    	<property name="filters">
+    		<map>
+    			<entry key="cas" value-ref="casFilter" />
+    			<entry key="logout" value-ref="logoutFilter" />
+    			<entry key="accessCheck" value-ref="myAccessCheckFilter"></entry>
+    		</map>
+    	</property>
+    	<property name="filterChainDefinitions">
+    		<value>
+    			<!-- 必须 -->
+				/shiro-cas					= cas
+				<!-- 必须 -->
+				/logout						= logout
+				<!-- 这下面添加需要进行URL访问控制的地址 -->
+           		/admin/**					= authc,accessCheck
+	           	/system/**					= authc,accessCheck
+	           	/							= authc
+	           	/index						= authc
+	           	<!-- sso情形下,默认全部不拦截,需要拦截的上面自行添加 -->
+	           	<!-- 必须 -->
+	           	/**							= anon
+			</value>
+    	</property>
+    </bean>
+    
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->  
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>

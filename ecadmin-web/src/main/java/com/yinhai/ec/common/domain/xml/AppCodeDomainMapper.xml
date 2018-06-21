@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.xml.AppCodeDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.AppCodeDomain" >
+    <result column="CODE_STRING" property="codeString" jdbcType="VARCHAR" />
+    <result column="CODE_NAME" property="codeName" jdbcType="VARCHAR" />
+    <result column="CODE_VALUE" property="codeValue" jdbcType="VARCHAR" />
+    <result column="CODE_VALUE_NAME" property="codeValueName" jdbcType="VARCHAR" />
+    <result column="CODE_TYPE" property="codeType" jdbcType="TINYINT" />
+    <result column="CODE_CREATEER" property="codeCreateer" jdbcType="INTEGER" />
+    <result column="CODE_CREATE_TIME" property="codeCreateTime" jdbcType="TIMESTAMP" />
+    <result column="CODE_STATUS" property="codeStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.AppCodeDomain" >
+    insert into hy_app_code (CODE_STRING, CODE_NAME, CODE_VALUE, 
+      CODE_VALUE_NAME, CODE_TYPE, CODE_CREATEER, 
+      CODE_CREATE_TIME, CODE_STATUS)
+    values (#{codeString,jdbcType=VARCHAR}, #{codeName,jdbcType=VARCHAR}, #{codeValue,jdbcType=VARCHAR}, 
+      #{codeValueName,jdbcType=VARCHAR}, #{codeType,jdbcType=TINYINT}, #{codeCreateer,jdbcType=INTEGER}, 
+      #{codeCreateTime,jdbcType=TIMESTAMP}, #{codeStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.AppCodeDomain" >
+    insert into hy_app_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="codeString != null" >
+        CODE_STRING,
+      </if>
+      <if test="codeName != null" >
+        CODE_NAME,
+      </if>
+      <if test="codeValue != null" >
+        CODE_VALUE,
+      </if>
+      <if test="codeValueName != null" >
+        CODE_VALUE_NAME,
+      </if>
+      <if test="codeType != null" >
+        CODE_TYPE,
+      </if>
+      <if test="codeCreateer != null" >
+        CODE_CREATEER,
+      </if>
+      <if test="codeCreateTime != null" >
+        CODE_CREATE_TIME,
+      </if>
+      <if test="codeStatus != null" >
+        CODE_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="codeString != null" >
+        #{codeString,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null" >
+        #{codeName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeValue != null" >
+        #{codeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="codeValueName != null" >
+        #{codeValueName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeType != null" >
+        #{codeType,jdbcType=TINYINT},
+      </if>
+      <if test="codeCreateer != null" >
+        #{codeCreateer,jdbcType=INTEGER},
+      </if>
+      <if test="codeCreateTime != null" >
+        #{codeCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="codeStatus != null" >
+        #{codeStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

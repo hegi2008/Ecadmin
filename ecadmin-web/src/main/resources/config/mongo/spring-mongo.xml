@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="mongoTemplate" class="com.yinhai.plugin.fs.mongo.template.MongoTemplate" init-method="initMongo" scope="singleton">
+		<property name="servers" value="${mongo.servers}"></property>
+		<property name="dbname" value="${mongo.dbname}"></property>
+		<property name="connectionsPerHost" value="${mongo.connectionsPerHost}"></property>
+		<property name="threadsAllowedToBlockForConnectionMultiplier"
+				  value="${mongo.threadsAllowedToBlockForConnectionMultiplier}"></property>
+		<property name="maxWaitTime" value="${mongo.maxWaitTime}"></property>
+		<property name="connectTimeout" value="${mongo.connectTimeout}"></property>
+		<property name="socketTimeout" value="${mongo.socketTimeout}"></property>
+		<property name="socketKeepAlive" value="${mongo.socketKeepAlive}"></property>
+		<!-- 是否需要安全验证 为true时 必须指定username和password -->
+		<property name="needAuthentication" value="true"></property>
+		<property name="username" value="${mongo.username}"></property>
+		<property name="password" value="${mongo.password}"></property>
+	</bean>
+	
+	<bean id="gridFSTemplate" class="com.yinhai.plugin.fs.mongo.template.GridFSTemplate">
+		<constructor-arg index="0" ref="mongoTemplate"></constructor-arg>
+		<!-- 可以理解为用来存放文件的(根)目录 -->
+		<property name="bucketName" value="fs"></property>
+	</bean>
+	
+	<bean id="mongoFSRepository" class="com.yinhai.plugin.fs.mongo.repository.FSRepositoryForMongo">
+		<property name="gridFSTemplate" ref="gridFSTemplate"></property>
+	</bean>
+</beans>

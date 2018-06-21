@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo">
+	<insert id="insertDemo" parameterType="map">
+		insert into tauserextra(user_id,user_photo)
+		values(#{user_id},#{user_photo})
+	</insert>
+	
+	<select id="demoListPage" parameterType="pp" resultType="map">
+		select * from hy_user
+		where 1=1
+		<if test="user_name != null">
+			and user_name = #{user_name,jdbcType=VARCHAR}
+		</if>
+	</select>
+</mapper>

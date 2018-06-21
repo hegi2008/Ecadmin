@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.appcode" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.AppCodeDomain">
+    <result column="CODE_STRING" jdbcType="VARCHAR" property="codeString" />
+    <result column="CODE_NAME" jdbcType="VARCHAR" property="codeName" />
+    <result column="CODE_VALUE" jdbcType="VARCHAR" property="codeValue" />
+    <result column="CODE_VALUE_NAME" jdbcType="VARCHAR" property="codeValueName" />
+    <result column="CODE_TYPE" jdbcType="TINYINT" property="codeType" />
+    <result column="CODE_CREATEER" jdbcType="INTEGER" property="codeCreateer" />
+    <result column="CODE_CREATE_TIME" jdbcType="TIMESTAMP" property="codeCreateTime" />
+    <result column="CODE_STATUS" jdbcType="TINYINT" property="codeStatus" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    CODE_STRING, CODE_NAME, CODE_VALUE, CODE_VALUE_NAME, CODE_TYPE, CODE_CREATEER, CODE_CREATE_TIME, 
+    CODE_STATUS
+  </sql>
+  
+  <select id="selectGroupCodeString" resultType="string">
+  	SELECT
+		GROUP_CONCAT(DISTINCT CODE_STRING)
+	FROM
+		hy_app_code
+  </select>
+  
+  <select id="selectAppCodeListByCodeString" parameterType="string" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List"></include>
+  	from hy_app_code
+  	where CODE_STRING = #{value,jdbcType=VARCHAR}
+  	and CODE_STATUS = 1
+  </select>
+  
+  <!-- 码表管理分页sql -->
+  <select id="queryListPageAppCode" parameterType="pp" resultMap="BaseResultMap">
+  	select
+		<include refid="Base_Column_List"></include>
+	from
+		hy_app_code
+	where 1=1
+	<if test="codeString != null and codeString != '' ">
+	   AND INSTR(CODE_STRING , #{codeString,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="codeName != null and codeName != '' ">
+	   AND INSTR(CODE_NAME , #{codeName,jdbcType=VARCHAR}) > 0
+	</if>
+	<if test="codeStatus != null">
+	   AND CODE_STATUS = #{codeStatus,jdbcType=INTEGER}
+	</if>
+	order by code_create_time desc
+  </select>
+  
+  <!-- 查询码表是否存在 -->
+  <select id="queryCountByStringAndValue" parameterType="map" resultType="integer">
+      select count(1) from hy_app_code
+      where CODE_STRING = #{codeString,jdbcType=VARCHAR}
+      and code_value = #{codeValue,jdbcType=VARCHAR}
+      and CODE_STATUS = 1
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.AppCodeDomain" >
+    insert into hy_app_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="codeString != null" >
+        CODE_STRING,
+      </if>
+      <if test="codeName != null" >
+        CODE_NAME,
+      </if>
+      <if test="codeValue != null" >
+        CODE_VALUE,
+      </if>
+      <if test="codeValueName != null" >
+        CODE_VALUE_NAME,
+      </if>
+      <if test="codeType != null" >
+        CODE_TYPE,
+      </if>
+      <if test="codeCreateer != null" >
+        CODE_CREATEER,
+      </if>
+      <if test="codeCreateTime != null" >
+        CODE_CREATE_TIME,
+      </if>
+      <if test="codeStatus != null" >
+        CODE_STATUS
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="codeString != null" >
+        #{codeString,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null" >
+        #{codeName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeValue != null" >
+        #{codeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="codeValueName != null" >
+        #{codeValueName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeType != null" >
+        #{codeType,jdbcType=TINYINT},
+      </if>
+      <if test="codeCreateer != null" >
+        #{codeCreateer,jdbcType=INTEGER},
+      </if>
+      <if test="codeCreateTime != null" >
+        #{codeCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="codeStatus != null" >
+        #{codeStatus,jdbcType=TINYINT}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateSelective" parameterType="com.yinhai.ec.common.domain.AppCodeDomain">
+      update hy_app_code
+      <set>
+	      <if test="codeString != null" >
+	        CODE_STRING = #{codeString,jdbcType=VARCHAR},
+	      </if>
+	      <if test="codeName != null" >
+	        CODE_NAME = #{codeName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="codeValue != null" >
+	        CODE_VALUE = #{codeValue,jdbcType=VARCHAR},
+	      </if>
+	      <if test="codeValueName != null" >
+	        CODE_VALUE_NAME = #{codeValueName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="codeType != null" >
+	        CODE_TYPE = #{codeType,jdbcType=TINYINT},
+	      </if>
+	      <if test="codeCreateer != null" >
+	        CODE_CREATEER = #{codeCreateer,jdbcType=INTEGER},
+	      </if>
+	      <if test="codeCreateTime != null" >
+	        CODE_CREATE_TIME = #{codeCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="codeStatus != null" >
+	        CODE_STATUS = #{codeStatus,jdbcType=TINYINT}
+	      </if>
+      </set> 
+      WHERE CODE_STRING = #{codeString,jdbcType=VARCHAR}
+      AND CODE_VALUE = #{codeValue,jdbcType=VARCHAR}
+  </update>
+</mapper>

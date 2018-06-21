@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.xml.OnlineLogDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.OnlineLogDomain" >
+    <id column="LOG_ID" property="logId" jdbcType="INTEGER" />
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="SESSIONID" property="sessionid" jdbcType="VARCHAR" />
+    <result column="LOGIN_IP" property="loginIp" jdbcType="VARCHAR" />
+    <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="LOGOUT_TIME" property="logoutTime" jdbcType="TIMESTAMP" />
+    <result column="IS_FORCE_LOGOUT" property="isForceLogout" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LOG_ID, USER_ID, SESSIONID, LOGIN_IP, LOGIN_TIME, LOGOUT_TIME, IS_FORCE_LOGOUT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hy_online_log
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hy_online_log
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.OnlineLogDomain" >
+    insert into hy_online_log (LOG_ID, USER_ID, SESSIONID, 
+      LOGIN_IP, LOGIN_TIME, LOGOUT_TIME, 
+      IS_FORCE_LOGOUT)
+    values (#{logId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{sessionid,jdbcType=VARCHAR}, 
+      #{loginIp,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, #{logoutTime,jdbcType=TIMESTAMP}, 
+      #{isForceLogout,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.OnlineLogDomain" >
+    insert into hy_online_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        LOG_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="sessionid != null" >
+        SESSIONID,
+      </if>
+      <if test="loginIp != null" >
+        LOGIN_IP,
+      </if>
+      <if test="loginTime != null" >
+        LOGIN_TIME,
+      </if>
+      <if test="logoutTime != null" >
+        LOGOUT_TIME,
+      </if>
+      <if test="isForceLogout != null" >
+        IS_FORCE_LOGOUT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionid != null" >
+        #{sessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null" >
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null" >
+        #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isForceLogout != null" >
+        #{isForceLogout,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yinhai.ec.common.domain.OnlineLogDomain" >
+    update hy_online_log
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionid != null" >
+        SESSIONID = #{sessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null" >
+        LOGIN_IP = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null" >
+        LOGOUT_TIME = #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isForceLogout != null" >
+        IS_FORCE_LOGOUT = #{isForceLogout,jdbcType=TINYINT},
+      </if>
+    </set>
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yinhai.ec.common.domain.OnlineLogDomain" >
+    update hy_online_log
+    set USER_ID = #{userId,jdbcType=INTEGER},
+      SESSIONID = #{sessionid,jdbcType=VARCHAR},
+      LOGIN_IP = #{loginIp,jdbcType=VARCHAR},
+      LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP},
+      LOGOUT_TIME = #{logoutTime,jdbcType=TIMESTAMP},
+      IS_FORCE_LOGOUT = #{isForceLogout,jdbcType=TINYINT}
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+  </update>
+</mapper>

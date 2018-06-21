@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.org.manager" >
+<resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.OrgDomain" >
+    <id column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="PARENT_ORG_ID" property="parentOrgId" jdbcType="INTEGER" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="COSTOMNO" property="costomno" jdbcType="VARCHAR" />
+    <result column="ORG_TYPE" property="orgType" jdbcType="TINYINT" />
+    <result column="ORG_ID_PATH" property="orgIdPath" jdbcType="VARCHAR" />
+    <result column="ORG_NAME_PATH" property="orgNamePath" jdbcType="VARCHAR" />
+    <result column="ORG_LEVEL" property="orgLevel" jdbcType="INTEGER" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
+    <result column="USER_CREATER" property="userCreater" jdbcType="INTEGER" />
+    <result column="USER_CREATE_TIME" property="userCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ORG_STATUS" property="orgStatus" jdbcType="TINYINT" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="TINYINT" />
+</resultMap>
+<sql id="Base_Column_List" >
+    ORG_ID, PARENT_ORG_ID, ORG_NAME, COSTOMNO, ORG_TYPE, ORG_ID_PATH, ORG_NAME_PATH,
+    ORG_LEVEL, SORT, USER_CREATER, USER_CREATE_TIME, ORG_STATUS, IS_LEAF
+</sql>
+<select id="queryOrgList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hy_org where ORG_STATUS=1
+</select>
+<select id="queryOrgChildren" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from hy_org
+    where PARENT_ORG_ID=#{id} and ORG_STATUS=1
+</select>
+<select id="queryOrgById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from hy_org
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+</select>
+<update id="deleteOrg" parameterType="java.lang.Integer" >
+    update hy_org set ORG_STATUS=0
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+</update>
+<update id="updateToTrueIfExistChild">
+    update hy_org set IS_LEAF=1
+    WHERE ORG_ID in
+    (select a.PARENT_ORG_ID from (SELECT PARENT_ORG_ID from hy_org where ORG_STATUS =1) a)
+</update>
+<update id="updateToFalseIfNoChild">
+    update hy_org set IS_LEAF=0
+    WHERE ORG_ID not in
+    (select a.PARENT_ORG_ID from (SELECT PARENT_ORG_ID from hy_org where ORG_STATUS =1) a)
+</update>
+<insert id="insertOrg" parameterType="com.yinhai.ec.common.domain.OrgDomain" >
+    insert into hy_org (ORG_ID, PARENT_ORG_ID, ORG_NAME,
+    COSTOMNO, ORG_TYPE, ORG_ID_PATH,
+    ORG_NAME_PATH, ORG_LEVEL, SORT,
+    USER_CREATER, USER_CREATE_TIME, ORG_STATUS,
+    IS_LEAF)
+    values (#{orgId,jdbcType=INTEGER}, #{parentOrgId,jdbcType=INTEGER}, #{orgName,jdbcType=VARCHAR},
+    #{costomno,jdbcType=VARCHAR}, #{orgType,jdbcType=TINYINT}, #{orgIdPath,jdbcType=VARCHAR},
+    #{orgNamePath,jdbcType=VARCHAR}, #{orgLevel,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER},
+    #{userCreater,jdbcType=INTEGER}, now(), 1,0)
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="orgId">
+        SELECT LAST_INSERT_ID() AS orgId
+    </selectKey>
+</insert>
+<update id="updateOrg" parameterType="com.yinhai.ec.common.domain.OrgDomain" >
+    update hy_org
+     <set>
+         <if test="parentOrgId != null">
+          PARENT_ORG_ID = #{parentOrgId,jdbcType=INTEGER},
+         </if>
+         <if test="orgName != null and orgName != ''">
+             ORG_NAME = #{orgName,jdbcType=VARCHAR},
+         </if>
+         <if test="costomno != null and costomno != ''">
+             COSTOMNO = #{costomno,jdbcType=VARCHAR},
+         </if>
+         <if test="orgType != null">
+             ORG_TYPE = #{orgType,jdbcType=TINYINT},
+         </if>
+        <if test="orgIdPath != null and orgIdPath != '' ">
+            ORG_ID_PATH = #{orgIdPath,jdbcType=VARCHAR},
+         </if>
+
+        <if test="orgNamePath != null and orgNamePath != ''">
+            ORG_NAME_PATH = #{orgNamePath,jdbcType=VARCHAR},
+         </if>
+        <if test="orgLevel != null">
+            ORG_LEVEL = #{orgLevel,jdbcType=INTEGER},
+         </if>
+        <if test="sort != null">
+            SORT = #{sort,jdbcType=INTEGER},
+         </if>
+         <if test="orgStatus != null">
+             ORG_STATUS = #{orgStatus,jdbcType=TINYINT},
+         </if>
+         <if test="isLeaf != null">
+             IS_LEAF = #{isLeaf,jdbcType=TINYINT}
+         </if>
+     </set>
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+</update>
+</mapper>

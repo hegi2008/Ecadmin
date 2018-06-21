@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.menu.manager" >
+  
+  <!-- 菜单管理分页sql -->
+  <select id="queryMenuList" parameterType="pp" resultType="map">
+  	select
+		hm.menu_id,
+		hm.parent_id as _parentId,
+		hm.menu_name,
+		hm.menu_url,
+		hm.menu_icon,
+		hm.menu_status,
+		hm.menu_creater,
+		hm.menu_create_time
+	from
+		hy_menu as hm
+	where hm.menu_status = 1
+	order by hm.menu_create_time desc
+  </select>
+  
+  <insert id="insertMenu" parameterType="com.yinhai.ec.common.domain.MenuDomain">
+  	insert into hy_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="menuName != null" >
+        MENU_NAME,
+      </if>
+      <if test="menuUrl != null" >
+        MENU_URL,
+      </if>
+      <if test="menuIcon != null" >
+        MENU_ICON,
+      </if>
+      <if test="menuStatus != null" >
+        MENU_STATUS,
+      </if>
+      <if test="menuCreater != null" >
+        MENU_CREATER,
+      </if>
+        MENU_CREATE_TIME
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIcon != null" >
+        #{menuIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null" >
+        #{menuStatus,jdbcType=TINYINT},
+      </if>
+      <if test="menuCreater != null" >
+        #{menuCreater,jdbcType=INTEGER},
+      </if>
+      now()
+    </trim>
+  </insert>
+  
+  <update id="updateMenuByMenuId" parameterType="com.yinhai.ec.common.domain.MenuDomain" >
+    update hy_menu
+    <set >
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null" >
+        MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIcon != null" >
+        MENU_ICON = #{menuIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null" >
+        MENU_STATUS = #{menuStatus,jdbcType=TINYINT},
+      </if>
+      <if test="menuCreater != null" >
+        MENU_CREATER = #{menuCreater,jdbcType=INTEGER},
+      </if>
+      <if test="menuCreateTime != null" >
+        MENU_CREATE_TIME = #{menuCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where MENU_ID = #{menuId,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.MenuDomain" >
+    <id column="MENU_ID" property="menuId" jdbcType="INTEGER" />
+    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+    <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+    <result column="MENU_URL" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="MENU_ICON" property="menuIcon" jdbcType="VARCHAR" />
+    <result column="MENU_STATUS" property="menuStatus" jdbcType="TINYINT" />
+    <result column="MENU_CREATER" property="menuCreater" jdbcType="INTEGER" />
+    <result column="MENU_CREATE_TIME" property="menuCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="querySingleMenu" parameterType="pp" resultMap="BaseResultMap">
+    select 
+    	 MENU_ID, PARENT_ID, MENU_NAME, MENU_URL, MENU_ICON, MENU_STATUS, MENU_CREATER, MENU_CREATE_TIME
+    from hy_menu
+    where MENU_ID = #{menu_id,jdbcType=INTEGER}
+    and MENU_STATUS = 1
+  </select>
+  
+  <select id="findChildrenMenu" parameterType="com.yinhai.ec.common.domain.MenuDomain" resultMap="BaseResultMap">
+  	select 
+    	 MENU_ID, PARENT_ID, MENU_NAME, MENU_URL, MENU_ICON, MENU_STATUS, MENU_CREATER, MENU_CREATE_TIME
+    from hy_menu
+    where PARENT_ID = #{menuId,jdbcType=INTEGER}
+    and MENU_STATUS = 1
+  </select>
+  
+  <!-- 删除菜单时要删除权限中的菜单 -->
+  <delete id="deleteMenuAuthorityByMenuid" parameterType="com.yinhai.ec.common.domain.MenuDomain">
+	delete from hy_menu_auth
+	where menu_id = #{menuId,jdbcType=INTEGER} 
+  </delete>
+</mapper>

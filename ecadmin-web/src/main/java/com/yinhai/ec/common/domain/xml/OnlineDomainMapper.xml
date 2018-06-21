@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.xml.OnlineDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.OnlineDomain" >
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="SESSIONID" property="sessionid" jdbcType="VARCHAR" />
+    <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="LOGIN_IP" property="loginIp" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.OnlineDomain" >
+    insert into hy_online (USER_ID, SESSIONID, LOGIN_TIME, 
+      LOGIN_IP)
+    values (#{userId,jdbcType=INTEGER}, #{sessionid,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, 
+      #{loginIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.OnlineDomain" >
+    insert into hy_online
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="sessionid != null" >
+        SESSIONID,
+      </if>
+      <if test="loginTime != null" >
+        LOGIN_TIME,
+      </if>
+      <if test="loginIp != null" >
+        LOGIN_IP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionid != null" >
+        #{sessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null" >
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

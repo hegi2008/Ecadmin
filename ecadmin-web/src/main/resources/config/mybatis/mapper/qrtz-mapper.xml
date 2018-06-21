@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="qrtz">
+    <select id="getJob" parameterType="map" resultType="map">
+    SELECT
+	qrtz_job_details.sched_name,
+	qrtz_job_details.job_name,
+	qrtz_job_details.job_group,
+	qrtz_job_details.description,
+	qrtz_job_details.job_class_name,
+	qrtz_job_details.is_durable,
+	qrtz_job_details.is_nonconcurrent,
+	qrtz_job_details.is_update_data,
+	qrtz_job_details.requests_recovery,
+	qrtz_job_details.job_data,
+	qrtz_triggers.trigger_name,
+	qrtz_triggers.trigger_group,
+	qrtz_triggers.trigger_state,
+	qrtz_cron_triggers.cron_expression
+    FROM
+        qrtz_job_details
+    LEFT JOIN qrtz_triggers ON qrtz_job_details.job_name = qrtz_triggers.job_name
+    AND qrtz_job_details.job_group = qrtz_triggers.job_group
+    AND qrtz_job_details.SCHED_NAME = qrtz_triggers.SCHED_NAME
+    LEFT JOIN qrtz_cron_triggers ON qrtz_triggers.TRIGGER_NAME = qrtz_cron_triggers.TRIGGER_NAME
+    AND qrtz_triggers.TRIGGER_GROUP = qrtz_cron_triggers.TRIGGER_GROUP
+    AND qrtz_triggers.SCHED_NAME = qrtz_cron_triggers.SCHED_NAME
+    WHERE  qrtz_job_details.sched_name=#{sched_name} and qrtz_job_details.job_name=#{job_name} and qrtz_job_details.job_group=#{job_group}
+  </select>
+    <select id="getJobList" parameterType="map" resultType="map">
+    SELECT
+	qrtz_job_details.sched_name,
+	qrtz_job_details.job_name,
+	qrtz_job_details.job_group,
+	qrtz_job_details.description,
+	qrtz_job_details.job_class_name,
+	qrtz_job_details.is_durable,
+	qrtz_job_details.is_nonconcurrent,
+	qrtz_job_details.is_update_data,
+	qrtz_job_details.requests_recovery,
+	qrtz_job_details.job_data,
+	qrtz_triggers.trigger_name,
+	qrtz_triggers.trigger_group,
+	qrtz_triggers.trigger_state,
+	qrtz_cron_triggers.cron_expression
+    FROM
+        qrtz_job_details
+    LEFT JOIN qrtz_triggers ON qrtz_job_details.job_name = qrtz_triggers.job_name
+    AND qrtz_job_details.job_group = qrtz_triggers.job_group
+    AND qrtz_job_details.SCHED_NAME = qrtz_triggers.SCHED_NAME
+    LEFT JOIN qrtz_cron_triggers ON qrtz_triggers.TRIGGER_NAME = qrtz_cron_triggers.TRIGGER_NAME
+    AND qrtz_triggers.TRIGGER_GROUP = qrtz_cron_triggers.TRIGGER_GROUP
+    AND qrtz_triggers.SCHED_NAME = qrtz_cron_triggers.SCHED_NAME
+        where 1=1
+    <if test="job_name!=null and job_name!=''">
+        and instr(qrtz_job_details.job_name,#{job_name})>0
+    </if>
+     <if test="job_class_name!=null and job_class_name!=''">
+        and instr(qrtz_job_details.job_class_name,#{job_class_name})>0
+    </if>
+        order by qrtz_triggers.trigger_state asc
+  </select>
+    <select id="getJobListCount" parameterType="map" resultType="java.lang.Long">
+    SELECT
+    count(1)
+    from qrtz_job_details
+  </select>
+
+</mapper>

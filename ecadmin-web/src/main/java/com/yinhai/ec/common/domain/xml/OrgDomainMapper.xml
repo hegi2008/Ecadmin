@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.xml.OrgDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.OrgDomain" >
+    <id column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="PARENT_ORG_ID" property="parentOrgId" jdbcType="INTEGER" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="COSTOMNO" property="costomno" jdbcType="VARCHAR" />
+    <result column="ORG_TYPE" property="orgType" jdbcType="TINYINT" />
+    <result column="ORG_ID_PATH" property="orgIdPath" jdbcType="VARCHAR" />
+    <result column="ORG_NAME_PATH" property="orgNamePath" jdbcType="VARCHAR" />
+    <result column="ORG_LEVEL" property="orgLevel" jdbcType="INTEGER" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
+    <result column="USER_CREATER" property="userCreater" jdbcType="INTEGER" />
+    <result column="USER_CREATE_TIME" property="userCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ORG_STATUS" property="orgStatus" jdbcType="TINYINT" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ORG_ID, PARENT_ORG_ID, ORG_NAME, COSTOMNO, ORG_TYPE, ORG_ID_PATH, ORG_NAME_PATH, 
+    ORG_LEVEL, SORT, USER_CREATER, USER_CREATE_TIME, ORG_STATUS, IS_LEAF
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hy_org
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hy_org
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.OrgDomain" >
+    insert into hy_org (ORG_ID, PARENT_ORG_ID, ORG_NAME, 
+      COSTOMNO, ORG_TYPE, ORG_ID_PATH, 
+      ORG_NAME_PATH, ORG_LEVEL, SORT, 
+      USER_CREATER, USER_CREATE_TIME, ORG_STATUS, 
+      IS_LEAF)
+    values (#{orgId,jdbcType=INTEGER}, #{parentOrgId,jdbcType=INTEGER}, #{orgName,jdbcType=VARCHAR}, 
+      #{costomno,jdbcType=VARCHAR}, #{orgType,jdbcType=TINYINT}, #{orgIdPath,jdbcType=VARCHAR}, 
+      #{orgNamePath,jdbcType=VARCHAR}, #{orgLevel,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+      #{userCreater,jdbcType=INTEGER}, #{userCreateTime,jdbcType=TIMESTAMP}, #{orgStatus,jdbcType=TINYINT}, 
+      #{isLeaf,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.OrgDomain" >
+    insert into hy_org
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="parentOrgId != null" >
+        PARENT_ORG_ID,
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME,
+      </if>
+      <if test="costomno != null" >
+        COSTOMNO,
+      </if>
+      <if test="orgType != null" >
+        ORG_TYPE,
+      </if>
+      <if test="orgIdPath != null" >
+        ORG_ID_PATH,
+      </if>
+      <if test="orgNamePath != null" >
+        ORG_NAME_PATH,
+      </if>
+      <if test="orgLevel != null" >
+        ORG_LEVEL,
+      </if>
+      <if test="sort != null" >
+        SORT,
+      </if>
+      <if test="userCreater != null" >
+        USER_CREATER,
+      </if>
+      <if test="userCreateTime != null" >
+        USER_CREATE_TIME,
+      </if>
+      <if test="orgStatus != null" >
+        ORG_STATUS,
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="parentOrgId != null" >
+        #{parentOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="costomno != null" >
+        #{costomno,jdbcType=VARCHAR},
+      </if>
+      <if test="orgType != null" >
+        #{orgType,jdbcType=TINYINT},
+      </if>
+      <if test="orgIdPath != null" >
+        #{orgIdPath,jdbcType=VARCHAR},
+      </if>
+      <if test="orgNamePath != null" >
+        #{orgNamePath,jdbcType=VARCHAR},
+      </if>
+      <if test="orgLevel != null" >
+        #{orgLevel,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="userCreater != null" >
+        #{userCreater,jdbcType=INTEGER},
+      </if>
+      <if test="userCreateTime != null" >
+        #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgStatus != null" >
+        #{orgStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yinhai.ec.common.domain.OrgDomain" >
+    update hy_org
+    <set >
+      <if test="parentOrgId != null" >
+        PARENT_ORG_ID = #{parentOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="costomno != null" >
+        COSTOMNO = #{costomno,jdbcType=VARCHAR},
+      </if>
+      <if test="orgType != null" >
+        ORG_TYPE = #{orgType,jdbcType=TINYINT},
+      </if>
+      <if test="orgIdPath != null" >
+        ORG_ID_PATH = #{orgIdPath,jdbcType=VARCHAR},
+      </if>
+      <if test="orgNamePath != null" >
+        ORG_NAME_PATH = #{orgNamePath,jdbcType=VARCHAR},
+      </if>
+      <if test="orgLevel != null" >
+        ORG_LEVEL = #{orgLevel,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="userCreater != null" >
+        USER_CREATER = #{userCreater,jdbcType=INTEGER},
+      </if>
+      <if test="userCreateTime != null" >
+        USER_CREATE_TIME = #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgStatus != null" >
+        ORG_STATUS = #{orgStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF = #{isLeaf,jdbcType=TINYINT},
+      </if>
+    </set>
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yinhai.ec.common.domain.OrgDomain" >
+    update hy_org
+    set PARENT_ORG_ID = #{parentOrgId,jdbcType=INTEGER},
+      ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      COSTOMNO = #{costomno,jdbcType=VARCHAR},
+      ORG_TYPE = #{orgType,jdbcType=TINYINT},
+      ORG_ID_PATH = #{orgIdPath,jdbcType=VARCHAR},
+      ORG_NAME_PATH = #{orgNamePath,jdbcType=VARCHAR},
+      ORG_LEVEL = #{orgLevel,jdbcType=INTEGER},
+      SORT = #{sort,jdbcType=INTEGER},
+      USER_CREATER = #{userCreater,jdbcType=INTEGER},
+      USER_CREATE_TIME = #{userCreateTime,jdbcType=TIMESTAMP},
+      ORG_STATUS = #{orgStatus,jdbcType=TINYINT},
+      IS_LEAF = #{isLeaf,jdbcType=TINYINT}
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </update>
+</mapper>

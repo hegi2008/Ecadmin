@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yinhai.ec.common.domain.xml.MenuDomainMapper" >
+  <resultMap id="BaseResultMap" type="com.yinhai.ec.common.domain.MenuDomain" >
+    <id column="MENU_ID" property="menuId" jdbcType="INTEGER" />
+    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+    <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+    <result column="MENU_URL" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="MENU_ICON" property="menuIcon" jdbcType="VARCHAR" />
+    <result column="MENU_STATUS" property="menuStatus" jdbcType="TINYINT" />
+    <result column="MENU_CREATER" property="menuCreater" jdbcType="INTEGER" />
+    <result column="MENU_CREATE_TIME" property="menuCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MENU_ID, PARENT_ID, MENU_NAME, MENU_URL, MENU_ICON, MENU_STATUS, MENU_CREATER, MENU_CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hy_menu
+    where MENU_ID = #{menuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hy_menu
+    where MENU_ID = #{menuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yinhai.ec.common.domain.MenuDomain" >
+    insert into hy_menu (MENU_ID, PARENT_ID, MENU_NAME, 
+      MENU_URL, MENU_ICON, MENU_STATUS, 
+      MENU_CREATER, MENU_CREATE_TIME)
+    values (#{menuId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, 
+      #{menuUrl,jdbcType=VARCHAR}, #{menuIcon,jdbcType=VARCHAR}, #{menuStatus,jdbcType=TINYINT}, 
+      #{menuCreater,jdbcType=INTEGER}, #{menuCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yinhai.ec.common.domain.MenuDomain" >
+    insert into hy_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        MENU_ID,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="menuName != null" >
+        MENU_NAME,
+      </if>
+      <if test="menuUrl != null" >
+        MENU_URL,
+      </if>
+      <if test="menuIcon != null" >
+        MENU_ICON,
+      </if>
+      <if test="menuStatus != null" >
+        MENU_STATUS,
+      </if>
+      <if test="menuCreater != null" >
+        MENU_CREATER,
+      </if>
+      <if test="menuCreateTime != null" >
+        MENU_CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        #{menuId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIcon != null" >
+        #{menuIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null" >
+        #{menuStatus,jdbcType=TINYINT},
+      </if>
+      <if test="menuCreater != null" >
+        #{menuCreater,jdbcType=INTEGER},
+      </if>
+      <if test="menuCreateTime != null" >
+        #{menuCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yinhai.ec.common.domain.MenuDomain" >
+    update hy_menu
+    <set >
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null" >
+        MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIcon != null" >
+        MENU_ICON = #{menuIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null" >
+        MENU_STATUS = #{menuStatus,jdbcType=TINYINT},
+      </if>
+      <if test="menuCreater != null" >
+        MENU_CREATER = #{menuCreater,jdbcType=INTEGER},
+      </if>
+      <if test="menuCreateTime != null" >
+        MENU_CREATE_TIME = #{menuCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where MENU_ID = #{menuId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yinhai.ec.common.domain.MenuDomain" >
+    update hy_menu
+    set PARENT_ID = #{parentId,jdbcType=INTEGER},
+      MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+      MENU_ICON = #{menuIcon,jdbcType=VARCHAR},
+      MENU_STATUS = #{menuStatus,jdbcType=TINYINT},
+      MENU_CREATER = #{menuCreater,jdbcType=INTEGER},
+      MENU_CREATE_TIME = #{menuCreateTime,jdbcType=TIMESTAMP}
+    where MENU_ID = #{menuId,jdbcType=INTEGER}
+  </update>
+</mapper>

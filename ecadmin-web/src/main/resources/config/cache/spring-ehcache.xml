@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+    <!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 -->
+    <cache:annotation-driven cache-manager="cacheManager"/>
+    
+    <!-- cacheManager工厂类，指定ehcache.xml的位置 -->
+    <bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    	<property name="configLocation" value="classpath:config/cache/ehcache.xml"></property>
+    	<property name="cacheManagerName" value="HYCodeCache"></property>
+    </bean>
+    <!-- cacheManager管理类,注入工厂 -->
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    	<property name="cacheManager" ref="cacheManagerFactory"></property>
+    </bean>
+    
+    <!-- 码表缓存管理类 码表默认按需加载 第一次查数据库 接下来会查询ehcache缓存 -->
+    <bean id="appCodeTemplate" class="com.yinhai.ec.base.cache.ehcache.AppCodeTemplate">
+    	<property name="codeCacheService" ref="codeCacheService"></property>
+    	<property name="cacheCacheManager" ref="cacheManager"></property>
+    </bean>
+</beans>
