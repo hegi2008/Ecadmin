@@ -47,7 +47,7 @@ public class AppCodeTemplate implements ApplicationContextAware{
 	 */
 	public void init() throws Exception{
 		if(logger.isDebugEnabled()){
-			logger.debug("开始加载系统码表");
+			logger.debug("开始加载系统码表啦");
 		}
 		String codeString = codeCacheService.getGroupCodeString();
 		CacheManager cacheManager = cacheCacheManager.getCacheManager();
