@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.cate.manager" >
+
+    <!--TA+BEGIN 查询-->
+    <!-- 查询一批数据的查询 -->
+    <select id="getList" parameterType="map" resultType="java.util.HashMap">
+        SELECT
+        a.cate_id as cate_id,   <!-- 自编号       -->
+        a.cate_name as cate_name,   <!-- 分类名       -->
+        a.parent_id as parent_id,   <!-- 父级ID 为0时为顶级 -->
+        a.status as status,   <!-- 状态 1启用，0注销 -->
+        a.sort_order as sort_order,   <!-- 排序         -->
+        a.cate_type as cate_type,    <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+        (
+        SELECT
+        cate_name
+        FROM
+        yw_article_category
+        WHERE
+        cate_id = a.parent_id
+        ) AS parent_name
+        FROM yw_article_category a
+        WHERE 1 = 1
+        <if test="cate_id != null">   <!-- 自编号       -->
+            and a.cate_id = #{cate_id,jdbcType=INTEGER}
+        </if>
+        <if test="cate_name != null">   <!-- 分类名       -->
+            and a.cate_name = #{cate_name,jdbcType=VARCHAR}
+        </if>
+        <if test="parent_id != null">   <!-- 父级ID 为0时为顶级 -->
+            and a.parent_id = #{parent_id,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">   <!-- 状态 1启用，0注销 -->
+            and a.status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="sort_order != null">   <!-- 排序         -->
+            and a.sort_order = #{sort_order,jdbcType=INTEGER}
+        </if>
+        <if test="cate_type != null">   <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+            and a.cate_type = #{cate_type,jdbcType=INTEGER}
+        </if>
+        ORDER BY a.cate_type ASC, a.sort_order DESC
+    </select>
+    <!-- 查询一批数据的查询 -->
+    <select id="queryListPageCate" parameterType="pp" resultType="map">
+        SELECT
+        a.cate_id as cate_id,   <!-- 自编号       -->
+        a.cate_name as cate_name,   <!-- 分类名       -->
+        a.parent_id as parent_id,   <!-- 父级ID 为0时为顶级 -->
+        a.status as status,   <!-- 状态 1启用，0注销 -->
+        a.sort_order as sort_order,   <!-- 排序         -->
+        a.cate_type as cate_type,    <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+        (
+        SELECT
+        cate_name
+        FROM
+        yw_article_category
+        WHERE
+        cate_id = a.parent_id
+        ) AS parent_name
+        FROM yw_article_category a
+        WHERE 1 = 1
+        <if test="cate_id != null">   <!-- 自编号       -->
+            and a.cate_id = #{cate_id,jdbcType=INTEGER}
+        </if>
+        <if test="cate_name != null">   <!-- 分类名       -->
+            and a.cate_name = #{cate_name,jdbcType=VARCHAR}
+        </if>
+        <if test="parent_id != null">   <!-- 父级ID 为0时为顶级 -->
+            and a.parent_id = #{parent_id,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">   <!-- 状态 1启用，0注销 -->
+            and a.status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="sort_order != null">   <!-- 排序         -->
+            and a.sort_order = #{sort_order,jdbcType=INTEGER}
+        </if>
+        <if test="cate_type != null">   <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+            and a.cate_type = #{cate_type,jdbcType=INTEGER}
+        </if>
+        ORDER BY a.sort_order ASC
+    </select>
+
+    <select id="getTotal" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM yw_article_category a
+        WHERE 1 = 1
+        <if test="cate_id != null">   <!-- 自编号       -->
+            and a.cate_id = #{cate_id,jdbcType=INTEGER}
+        </if>
+        <if test="cate_name != null">   <!-- 分类名       -->
+            and a.cate_name = #{cate_name,jdbcType=VARCHAR}
+        </if>
+        <if test="parent_id != null">   <!-- 父级ID 为0时为顶级 -->
+            and a.parent_id = #{parent_id,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">   <!-- 状态 1启用，0注销 -->
+            and a.status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="sort_order != null">   <!-- 排序         -->
+            and a.sort_order = #{sort_order,jdbcType=INTEGER}
+        </if>
+        <if test="cate_type != null">   <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+            and a.cate_type = #{cate_type,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <!-- 通过主键进行查询 -->
+    <select id="get" parameterType="map" resultType="java.util.HashMap">
+        SELECT
+        a.cate_id as cate_id,   <!-- 自编号       -->
+        a.cate_name as cate_name,   <!-- 分类名       -->
+        a.parent_id as parent_id,   <!-- 父级ID 为0时为顶级 -->
+        a.status as status,   <!-- 状态 1启用，0注销 -->
+        a.sort_order as sort_order,   <!-- 排序         -->
+        a.cate_type as cate_type    <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+        FROM yw_article_category a
+        WHERE 1 = 1
+        <![CDATA[	   AND a.cate_id = #{cate_id}    ]]>    <!-- 自编号 -->
+    </select>
+
+    <!-- 查询有效的文章分类 -->
+    <select id="getCategoryList" parameterType="map" resultType="java.util.HashMap">
+        SELECT
+        a.cate_id as id,   <!-- 自编号       -->
+        a.cate_name as text,   <!-- 分类名       -->
+        a.parent_id as parent_id  <!-- 父级id -->
+        FROM yw_article_category a
+        WHERE 1 = 1
+        AND STATUS = 1
+    </select>
+
+    <!--TA+BEGIN 操作-->
+    <!-- 插入单条数据 -->
+    <insert id="insert" parameterType="java.util.HashMap">
+        INSERT INTO yw_article_category (
+        cate_name,  <!-- 分类名       -->
+        parent_id,  <!-- 父级ID 为0时为顶级 -->
+        status,  <!-- 状态 1启用，0注销 -->
+        sort_order,  <!-- 排序         -->
+        cate_type)  <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+        VALUES (
+        #{cate_name,jdbcType=VARCHAR},  <!-- 分类名       -->
+        #{parent_id,jdbcType=VARCHAR},  <!-- 父级ID 为0时为顶级 -->
+        #{status,jdbcType=INTEGER},  <!-- 状态 1启用，0注销 -->
+        #{sort_order,jdbcType=INTEGER},  <!-- 排序         -->
+        #{cate_type,jdbcType=INTEGER})  <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+    </insert>
+
+    <!-- 通过主键修改数据库记录，domain的每一个字段都要设值，如果是null，则数据库中也是null -->
+    <update id="update" parameterType="map">
+        UPDATE yw_article_category SET
+        cate_name = #{cate_name,jdbcType=VARCHAR},  <!-- 分类名       -->
+        parent_id = #{parent_id,jdbcType=VARCHAR},  <!-- 父级ID 为0时为顶级 -->
+        status = #{status,jdbcType=INTEGER},  <!-- 状态 1启用，0注销 -->
+        sort_order = #{sort_order,jdbcType=INTEGER},  <!-- 排序         -->
+        cate_type = #{cate_type,jdbcType=INTEGER}  <!-- 文章类型： 1.新闻类型 2. 招聘 -->
+        WHERE 1 = 1
+        <![CDATA[	   AND cate_id = #{cate_id}   ]]>    <!-- 自编号 -->
+    </update>
+
+    <!-- 通过DTO更新单条数据,主键不能为空，只修改你设定值得字段，并且值不为null或"" -->
+    <update id="updateNotEmpty" parameterType="map">
+        UPDATE yw_article_category
+        <set >
+            <if test="cate_name != null" >
+                cate_name = #{cate_name,jdbcType=VARCHAR},
+            </if>
+            <if test="parent_id != null" >
+                parent_id = #{parent_id,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort_order != null" >
+                sort_order = #{sort_order,jdbcType=INTEGER},
+            </if>
+            <if test="cate_type != null" >
+                cate_type = #{cate_type,jdbcType=INTEGER}
+            </if>
+        </set>
+        WHERE 1 = 1
+        <![CDATA[	   AND cate_id = #{cate_id}   ]]>    <!-- 自编号 -->
+    </update>
+
+    <!-- 通过DTO更新单条数据，主键不能为空，只修改你设定值得字段，值可以为null或"" -->
+    <update id="updateAvailable" parameterType="map">
+        UPDATE yw_article_category
+        <set >
+            <if test="cate_name != null" >
+                cate_name = #{cate_name,jdbcType=VARCHAR},
+            </if>
+            <if test="parent_id != null" >
+                parent_id = #{parent_id,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort_order != null" >
+                sort_order = #{sort_order,jdbcType=INTEGER},
+            </if>
+            <if test="cate_type != null" >
+                cate_type = #{cate_type,jdbcType=INTEGER}
+            </if>
+        </set>
+        WHERE 1 = 1
+        <![CDATA[	   AND cate_id = #{cate_id}   ]]>    <!-- 自编号 -->
+    </update>
+
+    <!--通过主键删除单条数据-->
+    <delete id="delete" parameterType="map">
+        DELETE  FROM  yw_article_category
+        WHERE 1 = 1
+        <![CDATA[	   AND cate_id = #{cate_id}    ]]>    <!-- 自编号 -->
+    </delete>
+</mapper>

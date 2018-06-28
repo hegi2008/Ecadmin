@@ -97,9 +97,10 @@
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li class="dropdown">
+                            <!--暂不支持消息
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
-                            </a>
+                            </a>-->
                             <ul class="dropdown-menu dropdown-alerts">
                                 <li>
                                     <a href="mailbox.html">
