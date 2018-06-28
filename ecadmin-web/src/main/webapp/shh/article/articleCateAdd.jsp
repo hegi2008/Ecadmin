@@ -66,7 +66,7 @@
 </div>
 </body>
 </html>
-<%@include file="/UI/themes/hplus/basic.js.inc.jsp"%>
+<%@include file="/UI/themes/hplus/basic.js.inc.jsp" %>
 <script src="<%=basePath%>UI/plugins/bootstrapvalidator/bootstrapValidator.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {

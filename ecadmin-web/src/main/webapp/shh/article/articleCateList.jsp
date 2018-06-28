@@ -21,8 +21,12 @@
     <ec:grid id="articleCateGrid" title="分类信息" fit="true" fitColumns="true" showRowno="true" pagination="true"
              dataurl="${basePath}shh/cate/cateManager/queryCateList">
         <ec:gridToolbar>
-            <button type="button" class="btn btn-primary btn-sm" onclick="addArticleCate()"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;新增分类</button>
-            <button type="button" class="btn btn-outline btn-default btn-sm" onclick="resetFrom()"><i class="fa fa-refresh"></i>&nbsp;&nbsp;重置查询</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="addArticleCate()"><i
+                    class="fa fa-plus-square"></i>&nbsp;&nbsp;新增分类
+            </button>
+            <button type="button" class="btn btn-outline btn-default btn-sm" onclick="resetFrom()"><i
+                    class="fa fa-refresh"></i>&nbsp;&nbsp;重置查询
+            </button>
         </ec:gridToolbar>
         <ec:gridItem itemId="cate_id" itemName="文章分类id" hidden="true"></ec:gridItem>
         <ec:gridItem itemId="cate_name" itemName="分类名称"></ec:gridItem>
