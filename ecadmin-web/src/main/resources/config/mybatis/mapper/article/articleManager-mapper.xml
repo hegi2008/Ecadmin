@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hy.article.manager" >
+
+    <!--TA+BEGIN  查询类-->
+    <!-- 查询一批数据的查询 -->
+    <select id="getList" parameterType="map" resultType="java.util.HashMap">
+        SELECT
+        a.article_id as article_id,   <!-- 自增ID       -->
+        a.cate_id as cate_id,   <!-- 文章分类ID   -->
+        a.title  as title ,   <!-- 文章标题     -->
+        a.keywords as keywords,   <!-- 关键词、字   -->
+        a.fromto as fromto,   <!-- 文章摘自于   -->
+        a.link   as link  ,   <!-- 外部链接地址 -->
+        a.abstract as abstract_value,   <!-- 文章摘要     -->
+        a.sort_order as sort_order,   <!-- 排序的数字编号 -->
+        a.status as status,
+        a.count  as count ,   <!-- 点击次数     -->
+        a.add_time as add_time,   <!-- 文章添加时间 -->
+        date_format(a.publish_time,'%Y-%m-%d %h:%i') as publish_time,
+        a.add_username as add_username,   <!-- 发布人       -->
+        a.article_top as article_top,   <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+        a.file_url as file_url,    <!--     附件         -->
+        b.cate_name as cate_name,
+        b.cate_type as cate_type
+        FROM yw_article a , yw_article_category b
+        WHERE 1=1 and a.cate_id = b.cate_id
+        <!-- <![CDATA[		 AND  a.status <> 3   ]]> -->
+        <if test="article_id != null and article_id != ''">   <!-- 自增ID       -->
+            and a.article_id = #{article_id,jdbcType=INTEGER}
+        </if>
+        <if test="cate_id != null and cate_id != ''">   <!-- 文章分类ID   -->
+            and a.cate_id = #{cate_id,jdbcType=INTEGER}
+        </if>
+        <if test="title != null and title != ''">   <!-- 文章标题     -->
+            <![CDATA[   and INSTR(a.TITLE, #{title}) = 1       	 ]]>
+        </if>
+        <if test="keywords != null and keywords != ''">   <!-- 关键词、字   -->
+            <![CDATA[	and INSTR(a.keywords, #{keywords})  > 0        ]]>
+        </if>
+        <if test="fromto != null and fromto != ''">   <!-- 文章摘自于   -->
+            and a.fromto = #{fromto,jdbcType=VARCHAR}
+        </if>
+        <if test="link != null and link != ''">   <!-- 外部链接地址 -->
+            and a.link = #{link,jdbcType=VARCHAR}
+        </if>
+        <if test="abstract != null and abstract != ''">   <!-- 文章摘要     -->
+            and a.abstract = #{abstract,jdbcType=VARCHAR}
+        </if>
+        <if test="sort_order != null and sort_order != ''">   <!-- 排序的数字编号 -->
+            and a.sort_order = #{sort_order,jdbcType=INTEGER}
+        </if>
+        <if test="status != null and status != ''">   <!-- 有效状态 1有，0否 2通过审核3逻辑删除 -->
+            and a.status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="count != null and count != ''">   <!-- 点击次数     -->
+            and a.count = #{count,jdbcType=INTEGER}
+        </if>
+        <if test="add_time_start != null and add_time_start != ''">   <!-- 文章添加时间 -->
+            <![CDATA[ and date_format(a.add_time, '%Y-%m-%d') >= #{add_time_start} and	date_format(a.add_time, '%Y-%m-%d') <= #{add_time_end} ]]>
+        </if>
+        <if test="add_username != null and add_username != ''">   <!-- 发布人       -->
+            and a.add_username = #{add_username,jdbcType=VARCHAR}
+        </if>
+        <if test="article_top != null and article_top != ''">   <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+            and a.article_top = #{article_top,jdbcType=INTEGER}
+        </if>
+        <if test="cate_type != null and cate_type != ''">   <!--              -->
+            and a.cate_type = #{cate_type,jdbcType=INTEGER}
+        </if>
+        ORDER BY a.sort_order DESC, a.publish_time DESC
+    </select>
+    <select id="queryListPageArticle" parameterType="pp" resultType="java.util.HashMap">
+        SELECT
+        a.article_id as article_id,   <!-- 自增ID       -->
+        a.cate_id as cate_id,   <!-- 文章分类ID   -->
+        a.title  as title ,   <!-- 文章标题     -->
+        a.keywords as keywords,   <!-- 关键词、字   -->
+        a.fromto as fromto,   <!-- 文章摘自于   -->
+        a.link   as link  ,   <!-- 外部链接地址 -->
+        a.abstract as abstract_value,   <!-- 文章摘要     -->
+        a.sort_order as sort_order,   <!-- 排序的数字编号 -->
+        a.status as status,
+        a.count  as count ,   <!-- 点击次数     -->
+        a.add_time as add_time,   <!-- 文章添加时间 -->
+        date_format(a.publish_time,'%Y-%m-%d %h:%i') as publish_time,
+        a.add_username as add_username,   <!-- 发布人       -->
+        a.article_top as article_top,   <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+        a.file_url as file_url,    <!--     附件         -->
+        b.cate_name as cate_name,
+        b.cate_type as cate_type
+        FROM yw_article a , yw_article_category b
+        WHERE 1=1 and a.cate_id = b.cate_id
+        <!-- <![CDATA[		 AND  a.status <> 3   ]]> -->
+        <if test="article_id != null and article_id != ''">   <!-- 自增ID       -->
+            and a.article_id = #{article_id,jdbcType=INTEGER}
+        </if>
+        <if test="cate_id != null and cate_id != ''">   <!-- 文章分类ID   -->
+            and a.cate_id = #{cate_id,jdbcType=INTEGER}
+        </if>
+        <if test="title != null and title != ''">   <!-- 文章标题     -->
+            <![CDATA[   and INSTR(a.TITLE, #{title}) = 1       	 ]]>
+        </if>
+        <if test="keywords != null and keywords != ''">   <!-- 关键词、字   -->
+            <![CDATA[	and INSTR(a.keywords, #{keywords})  > 0        ]]>
+        </if>
+        <if test="fromto != null and fromto != ''">   <!-- 文章摘自于   -->
+            and a.fromto = #{fromto,jdbcType=VARCHAR}
+        </if>
+        <if test="link != null and link != ''">   <!-- 外部链接地址 -->
+            and a.link = #{link,jdbcType=VARCHAR}
+        </if>
+        <if test="abstract != null and abstract != ''">   <!-- 文章摘要     -->
+            and a.abstract = #{abstract,jdbcType=VARCHAR}
+        </if>
+        <if test="sort_order != null and sort_order != ''">   <!-- 排序的数字编号 -->
+            and a.sort_order = #{sort_order,jdbcType=INTEGER}
+        </if>
+        <if test="status != null and status != ''">   <!-- 有效状态 1有，0否 2通过审核3逻辑删除 -->
+            and a.status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="count != null and count != ''">   <!-- 点击次数     -->
+            and a.count = #{count,jdbcType=INTEGER}
+        </if>
+        <if test="add_time_start != null and add_time_start != ''">   <!-- 文章添加时间 -->
+            <![CDATA[ and date_format(a.add_time, '%Y-%m-%d') >= #{add_time_start} and	date_format(a.add_time, '%Y-%m-%d') <= #{add_time_end} ]]>
+        </if>
+        <if test="add_username != null and add_username != ''">   <!-- 发布人       -->
+            and a.add_username = #{add_username,jdbcType=VARCHAR}
+        </if>
+        <if test="article_top != null and article_top != ''">   <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+            and a.article_top = #{article_top,jdbcType=INTEGER}
+        </if>
+        <if test="cate_type != null and cate_type != ''">   <!--              -->
+            and a.cate_type = #{cate_type,jdbcType=INTEGER}
+        </if>
+        ORDER BY a.sort_order DESC, a.publish_time DESC
+    </select>
+
+    <select id="getListCount" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM yw_article a , yw_article_category b
+        WHERE 1=1 and a.cate_id = b.cate_id
+        <!-- <![CDATA[		 AND  a.status <> 3   ]]> -->
+        <if test="article_id != null and article_id != ''">   <!-- 自增ID       -->
+            and a.article_id = #{article_id,jdbcType=INTEGER}
+        </if>
+        <if test="cate_id != null and cate_id != ''">   <!-- 文章分类ID   -->
+            and a.cate_id = #{cate_id,jdbcType=INTEGER}
+        </if>
+        <if test="title != null and title != ''">   <!-- 文章标题     -->
+            <![CDATA[   and INSTR(a.TITLE, #{title}) = 1       	 ]]>
+        </if>
+        <if test="keywords != null and keywords != ''">   <!-- 关键词、字   -->
+            <![CDATA[	and INSTR(a.keywords, #{keywords})  > 0        ]]>
+        </if>
+        <if test="fromto != null and fromto != ''">   <!-- 文章摘自于   -->
+            and a.fromto = #{fromto,jdbcType=VARCHAR}
+        </if>
+        <if test="link != null and link != ''">   <!-- 外部链接地址 -->
+            and a.link = #{link,jdbcType=VARCHAR}
+        </if>
+        <if test="abstract != null and abstract != ''">   <!-- 文章摘要     -->
+            and a.abstract = #{abstract,jdbcType=VARCHAR}
+        </if>
+        <if test="sort_order != null and sort_order != ''">   <!-- 排序的数字编号 -->
+            and a.sort_order = #{sort_order,jdbcType=INTEGER}
+        </if>
+        <if test="status != null and status != ''">   <!-- 有效状态 1有，0否 2通过审核3逻辑删除 -->
+            and a.status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="count != null and count != ''">   <!-- 点击次数     -->
+            and a.count = #{count,jdbcType=INTEGER}
+        </if>
+        <if test="add_time_start != null and add_time_start != ''">   <!-- 文章添加时间 -->
+            <![CDATA[ and date_format(a.add_time, '%Y-%m-%d') >= #{add_time_start} and	date_format(a.add_time, '%Y-%m-%d') <= #{add_time_end} ]]>
+        </if>
+        <if test="add_username != null and add_username != ''">   <!-- 发布人       -->
+            and a.add_username = #{add_username,jdbcType=VARCHAR}
+        </if>
+        <if test="article_top != null and article_top != ''">   <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+            and a.article_top = #{article_top,jdbcType=INTEGER}
+        </if>
+        <if test="cate_type != null and cate_type != ''">   <!--              -->
+            and a.cate_type = #{cate_type,jdbcType=INTEGER}
+        </if>
+    </select>
+    <!-- 查询文章最大的sort_order -->
+    <select id="getMaxSortOrder" parameterType="map" resultType="java.lang.Integer">
+	    SELECT MAX(SORT_ORDER) FROM yw_article
+	</select>
+
+    <!-- 通过主键进行查询 -->
+    <select id="get" parameterType="int" resultType="java.util.HashMap">
+        SELECT
+        a.article_id as article_id,   <!-- 自增ID       -->
+        a.cate_id as cate_id,   <!-- 文章分类ID   -->
+        a.title  as title ,   <!-- 文章标题     -->
+        a.keywords as keywords,   <!-- 关键词、字   -->
+        a.fromto as fromto,   <!-- 文章摘自于   -->
+        a.link   as link  ,   <!-- 外部链接地址 -->
+        a.abstract as abstract,   <!-- 文章摘要     -->
+        a.content as content,   <!-- 文章内容     -->
+        a.sort_order as sort_order,   <!-- 排序的数字编号 -->
+        a.status as status,   <!-- 有效状态 1有，0否3逻辑删除 -->
+        a.count  as count ,   <!-- 点击次数     -->
+        a.add_time as add_time,   <!-- 文章添加时间 -->
+        a.publish_time as publish_time,   <!-- 文章发布时间 -->
+        a.add_username as add_username,   <!-- 发布人       -->
+        a.article_top as article_top,   <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+        a.file_url as file_url,    <!--              -->
+        b.cate_name as cate_name,
+        b.cate_type as cate_type
+        FROM yw_article a , yw_article_category b
+        WHERE 1=1 and a.cate_id = b.cate_id
+        <![CDATA[	   AND a.article_id = #{article_id}    ]]>    <!-- 自增ID -->
+    </select>
+
+    <!--TA+END-->
+
+
+    <!--TA+BEGIN  操作类-->
+    <!-- 插入单条数据 -->
+    <insert id="insert" parameterType="java.util.HashMap">
+        INSERT INTO yw_article (
+        article_id,  <!-- 自增ID       -->
+        cate_id,  <!-- 文章分类ID   -->
+        title ,  <!-- 文章标题     -->
+        keywords,  <!-- 关键词、字   -->
+        fromto,  <!-- 文章摘自于   -->
+        link  ,  <!-- 外部链接地址 -->
+        abstract,  <!-- 文章摘要     -->
+        content,  <!-- 文章内容     -->
+        sort_order,  <!-- 排序的数字编号 -->
+        status,  <!-- 有效状态 1有，0否3逻辑删除 -->
+        count ,  <!-- 点击次数     -->
+        add_time,  <!-- 文章添加时间 -->
+        publish_time,  <!-- 发布时间 -->
+        add_username,  <!-- 发布人       -->
+        article_top,  <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+        file_url)  <!--              -->
+        VALUES (
+        #{article_id,jdbcType=INTEGER},  <!-- 自增ID       -->
+        #{cate_id,jdbcType=INTEGER},  <!-- 文章分类ID   -->
+        #{title,jdbcType=VARCHAR},  <!-- 文章标题     -->
+        #{keywords,jdbcType=VARCHAR},  <!-- 关键词、字   -->
+        #{fromto,jdbcType=VARCHAR},  <!-- 文章摘自于   -->
+        #{link,jdbcType=VARCHAR},  <!-- 外部链接地址 -->
+        #{abstract,jdbcType=VARCHAR},  <!-- 文章摘要     -->
+        #{content,jdbcType=VARCHAR},  <!-- 文章内容     -->
+        #{sort_order,jdbcType=INTEGER},  <!-- 排序的数字编号 -->
+        #{status,jdbcType=INTEGER},  <!-- 有效状态 1有，0否3逻辑删除 -->
+        #{count,jdbcType=INTEGER},  <!-- 点击次数     -->
+        now(),  <!-- 文章添加时间 -->
+        #{publish_time},  <!-- 文章添加时间 -->
+        #{add_username,jdbcType=VARCHAR},  <!-- 发布人       -->
+        #{article_top,jdbcType=INTEGER},  <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+        #{file_url,jdbcType=VARCHAR})  <!--              -->
+        <selectKey keyProperty="id" resultType="int" >
+            select LAST_INSERT_ID() as  id
+        </selectKey>
+    </insert>
+    <!-- 置顶 -->
+    <update id="updateMaxSortOrder" parameterType="map">
+        UPDATE yw_article SET
+        sort_order = #{max_sort_order,jdbcType=INTEGER}  <!-- 排序的数字编号 -->
+        WHERE 1 = 1
+        <![CDATA[	   AND article_id = #{article_id}    ]]>    <!-- 文章ID -->
+    </update>
+    <!-- 通过DTO更新单条数据,主键不能为空，只修改你设定值得字段，并且值不为null或"" -->
+    <update id="updateNotEmpty" parameterType="map">
+        UPDATE yw_article
+        <set>
+            <if test="cate_id != null">   <!-- 文章分类ID   -->
+                cate_id = #{cate_id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">   <!-- 文章标题     -->
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">   <!-- 关键词、字   -->
+                keywords = #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="fromto != null">   <!-- 文章摘自于   -->
+                fromto = #{fromto,jdbcType=VARCHAR},
+            </if>
+            <if test="link != null">   <!-- 外部链接地址 -->
+                link = #{link,jdbcType=VARCHAR},
+            </if>
+            <if test="abstract != null">   <!-- 文章摘要     -->
+                abstract = #{abstract,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">   <!-- 文章内容     -->
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="sort_order != null">   <!-- 排序的数字编号 -->
+                sort_order = #{sort_order,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">   <!-- 有效状态 1有，0否3逻辑删除 -->
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="count != null">   <!-- 点击次数     -->
+                count = #{count,jdbcType=INTEGER},
+            </if>
+            <if test="add_time != null">   <!-- 文章添加时间 -->
+                add_time = #{add_time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="publish_time != null">   <!-- 文章发布时间 -->
+                publish_time = #{publish_time,jdbcType=VARCHAR},
+            </if>
+            <if test="add_username != null">   <!-- 发布人       -->
+                add_username = #{add_username,jdbcType=VARCHAR},
+            </if>
+            <if test="article_top != null">   <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+                article_top = #{article_top,jdbcType=INTEGER},
+            </if>
+            <if test="file_url != null">   <!--              -->
+                file_url = #{file_url,jdbcType=VARCHAR}
+            </if>
+        </set>
+        WHERE 1 = 1
+        <![CDATA[	   AND article_id = #{article_id}    ]]>    <!-- 自增ID -->
+    </update>
+    <!-- 通过DTO更新单条数据，主键不能为空，只修改你设定值得字段，值可以为null或"" -->
+    <update id="updateAvailable" parameterType="map">
+        UPDATE yw_article
+        <set>
+            <if test="cate_id != null">   <!-- 文章分类ID   -->
+                cate_id = #{cate_id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">   <!-- 文章标题     -->
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">   <!-- 关键词、字   -->
+                keywords = #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="fromto != null">   <!-- 文章摘自于   -->
+                fromto = #{fromto,jdbcType=VARCHAR},
+            </if>
+            <if test="link != null">   <!-- 外部链接地址 -->
+                link = #{link,jdbcType=VARCHAR},
+            </if>
+            <if test="abstract != null">   <!-- 文章摘要     -->
+                abstract = #{abstract,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">   <!-- 文章内容     -->
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="sort_order != null">   <!-- 排序的数字编号 -->
+                sort_order = #{sort_order,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">   <!-- 有效状态 1有，0否3逻辑删除 -->
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="count != null">   <!-- 点击次数     -->
+                count = #{count,jdbcType=INTEGER},
+            </if>
+            <if test="add_time != null">   <!-- 文章添加时间 -->
+                add_time = #{add_time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="publish_time != null">   <!-- 文章发布时间 -->
+                publish_time = #{publish_time,jdbcType=VARCHAR},
+            </if>
+            <if test="add_username != null">   <!-- 发布人       -->
+                add_username = #{add_username,jdbcType=VARCHAR},
+            </if>
+            <if test="article_top != null">   <!-- 文章置顶状态0否1是|主要用于首页文章读取判断 -->
+                article_top = #{article_top,jdbcType=INTEGER},
+            </if>
+            <if test="file_url != null">   <!--              -->
+                file_url = #{file_url,jdbcType=VARCHAR}
+            </if>
+        </set>
+        WHERE 1 = 1
+        <![CDATA[	   AND article_id = #{article_id}    ]]>    <!-- 自增ID -->
+    </update>
+
+    <!--通过主键删除单条数据-->
+    <delete id="delete" parameterType="map">
+        DELETE  FROM  yw_article
+        WHERE 1 = 1
+        <![CDATA[	   AND article_id = #{article_id}    ]]>    <!-- 自增ID -->
+    </delete>
+
+    <!--TA+END-->
+</mapper>

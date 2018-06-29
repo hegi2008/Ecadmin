@@ -22,7 +22,7 @@ public class ArticleServiceImpl extends BaseServiceImpl implements ArticleServic
     @Override
     public Map<String, Object> saveArticle(Map<String, Object> param) {
         param.remove("article_id");
-        Integer id = sqlSession.insert("ec_article.insert", param);
+        Integer id = sqlSession.insert("hy.article.manager.insert", param);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("error", false);
         result.put("error_msg", "新增文章成功！");
@@ -38,7 +38,7 @@ public class ArticleServiceImpl extends BaseServiceImpl implements ArticleServic
 
     @Override
     public Map<String, Object> updateArticleTop(Map<String, Object> param) {
-        Integer max = (Integer) sqlSession.selectOne("ec_article.getMaxSortOrder", param) + 1;
+        Integer max = (Integer) sqlSession.selectOne("hy.article.manager.getMaxSortOrder", param) + 1;
         param.put("max_sort_order", max);
         if (sqlSession.update("ec_article.updateMaxSortOrder", param) > 1) {
             throw new BaseUpdateException("更新文章置顶信息大于1条!");
@@ -51,27 +51,27 @@ public class ArticleServiceImpl extends BaseServiceImpl implements ArticleServic
 
     @Override
     public List<Map<String, Object>> queryCategoryList(Map<String, Object> param) {
-        return sqlSession.selectList("ec_article_category.getCategoryList", param);
+        return sqlSession.selectList("hy.cate.manager.getCategoryList", param);
     }
 
     @Override
     public List<Map<String, Object>> queryArticleList(Map<String, Object> param) {
-        return sqlSession.selectList("ec_article.getList", param);
+        return sqlSession.selectList("hy.article.manager.getList", param);
     }
 
     @Override
     public Integer queryArticleListCount(Map<String, Object> param) {
-        return (Integer) sqlSession.selectOne("ec_article.getListCount", param);
+        return (Integer) sqlSession.selectOne("hy.article.manager.getListCount", param);
     }
 
     @Override
     public Map<String, Object> queryArticleById(Integer id) {
-        return (Map<String, Object>) sqlSession.selectOne("ec_article.get", id);
+        return (Map<String, Object>) sqlSession.selectOne("hy.article.manager.get", id);
     }
 
     @Override
     public Map<String, Object> updateArticle(Map<String, Object> param) {
-        if (sqlSession.update("ec_article.updateAvailable", param) > 1) {
+        if (sqlSession.update("hy.article.manager.updateAvailable", param) > 1) {
             throw new BaseUpdateException("更新文章信息大于1条!");
         }
         if (param.get("article_top") != null && IConst.ARTICLE_TOP_1.toString().equals(param.get("article_top").toString())) {
