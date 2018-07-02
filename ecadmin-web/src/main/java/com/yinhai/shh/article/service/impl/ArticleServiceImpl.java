@@ -40,7 +40,7 @@ public class ArticleServiceImpl extends BaseServiceImpl implements ArticleServic
     public Map<String, Object> updateArticleTop(Map<String, Object> param) {
         Integer max = (Integer) sqlSession.selectOne("hy.article.manager.getMaxSortOrder", param) + 1;
         param.put("max_sort_order", max);
-        if (sqlSession.update("ec_article.updateMaxSortOrder", param) > 1) {
+        if (sqlSession.update("hy.article.manager.updateMaxSortOrder", param) > 1) {
             throw new BaseUpdateException("更新文章置顶信息大于1条!");
         }
         Map<String, Object> result = new HashMap<String, Object>();

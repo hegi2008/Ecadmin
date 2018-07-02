@@ -50,8 +50,8 @@ public class ArticleManagerController extends BaseController{
 		PageParam pageParam = getPageParam(request);
 		if(!StringUtils.isEmpty(pageParam.get("add_time_value"))) {
 			String time = pageParam.get("add_time_value").toString();
-			pageParam.put("add_time_start", time.substring(0, time.indexOf("~")).trim()+" 00:00:00");
-			pageParam.put("add_time_end", time.substring(time.indexOf("~") + 1, time.length()).trim()+" 23:59:59");
+			pageParam.put("add_time_start", time.substring(0, time.indexOf("~")).trim());
+			pageParam.put("add_time_end", time.substring(time.indexOf("~") + 1, time.length()).trim());
 		}
 		articleService.queryForPageWithDefault("hy.article.manager.queryListPageArticle",pageParam);
 		return pageParam.toDatagridMap();
