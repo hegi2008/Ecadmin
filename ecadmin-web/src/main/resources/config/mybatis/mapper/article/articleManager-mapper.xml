@@ -33,7 +33,7 @@
             and a.cate_id = #{cate_id,jdbcType=INTEGER}
         </if>
         <if test="title != null and title != ''">   <!-- 文章标题     -->
-            <![CDATA[   and INSTR(a.TITLE, #{title}) = 1       	 ]]>
+            <![CDATA[   and INSTR(a.TITLE, #{title}) > 1       	 ]]>
         </if>
         <if test="keywords != null and keywords != ''">   <!-- 关键词、字   -->
             <![CDATA[	and INSTR(a.keywords, #{keywords})  > 0        ]]>

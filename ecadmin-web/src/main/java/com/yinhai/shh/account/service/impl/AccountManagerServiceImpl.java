@@ -21,10 +21,10 @@ public class AccountManagerServiceImpl extends BaseServiceImpl implements Accoun
 			throws Exception {
 		
 		// 验证参数
-		if (pageParam.get("yad901") == null) {
+		if (pageParam.get("out_platform_id") == null) {
 			bean.setError_msg("账户ID不能为空");
 		}
-		if (pageParam.get("yad961") == null) {
+		if (pageParam.get("channel") == null) {
 			bean.setError_msg("渠道不能为空");
 		}
 		
@@ -33,8 +33,8 @@ public class AccountManagerServiceImpl extends BaseServiceImpl implements Accoun
 		if (StringUtils.isEmpty(bean.getError_msg())) {
 			bean.setError(false);
 			accountDomain.setDes(pageParam.get("des")+"");
-			accountDomain.setYad901(pageParam.get("yad901").toString());
-			accountDomain.setYad961(pageParam.get("yad961").toString());
+			accountDomain.setOut_platform_id(pageParam.get("out_platform_id").toString());
+			accountDomain.setChannel(pageParam.get("channel").toString());
 
 			if (!StringUtils.isEmpty(pageParam.get("edit"))) {
 				int count = sqlSession.update("hy.account.manager.updateAccountByAccountId", accountDomain);

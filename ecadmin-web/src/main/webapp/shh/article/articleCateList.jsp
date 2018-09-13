@@ -11,20 +11,20 @@
 <div class="container-fluid ec-form">
     <form id="form1" class="form-inline" role="form" style="margin-left:15px;">
         <div class="form-group" style="margin-left:30px;">
-            <label for="cate_name">分类名称</label>
+            <label for="cate_id_s">分类名称</label>
             <select class="form-control" id="cate_id_s" onchange="queryGrid();">
             </select>
         </div>
     </form>
 </div>
-<div class="container-fluid" style="height: 500px;margin-top:15px;">
+<div class="container-fluid" style="height: 600px;margin-top:15px;">
     <ec:grid id="articleCateGrid" title="分类信息" fit="true" fitColumns="true" showRowno="true" pagination="true"
              dataurl="${basePath}shh/cate/cateManager/queryCateList">
         <ec:gridToolbar>
             <button type="button" class="btn btn-primary btn-sm" onclick="addArticleCate()"><i
                     class="fa fa-plus-square"></i>&nbsp;&nbsp;新增分类
             </button>
-            <button type="button" class="btn btn-outline btn-default btn-sm" onclick="resetFrom()"><i
+            <button type="button" class="btn btn-primary btn-sm" onclick="resetFrom()"><i
                     class="fa fa-refresh"></i>&nbsp;&nbsp;重置查询
             </button>
         </ec:gridToolbar>

@@ -5,19 +5,19 @@
   <!-- 账户管理分页sql -->
   <select id="queryListPageAccountManager" parameterType="pp" resultType="map">
   	select
-		u.yad901,
-		u.yad961,
+		u.out_platform_id,
+		u.channel,
 		u.des,
 		u.create_time,
 		u.update_time
 	from
 		yw_account u
 	where 1=1
-	<if test="yad901 != null and yad901 != ''">
-		and instr(u.yad901 , #{yad901,jdbcType=VARCHAR}) > 0
+	<if test="out_platform_id != null and out_platform_id != ''">
+		and instr(u.out_platform_id , #{out_platform_id,jdbcType=VARCHAR}) > 0
 	</if>
-	<if test="yad961 != null and yad961 != ''">
-		and instr(u.yad961 , #{yad961,jdbcType=VARCHAR}) > 0
+	<if test="channel != null and channel != ''">
+		and instr(u.channel , #{channel,jdbcType=VARCHAR}) > 0
 	</if>
 	<if test="startDate != null and endDate != null">
 		and u.create_time BETWEEN DATE_FORMAT(#{startDate,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
@@ -29,11 +29,11 @@
   <insert id="insertAccount" parameterType="com.yinhai.shh.account.domain.AccountDomain">
   	insert into yw_account
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="yad901 != null" >
-          YAD901,
+      <if test="out_platform_id != null" >
+          out_platform_id,
       </if>
-      <if test="yad961 != null" >
-          yad961,
+      <if test="channel != null" >
+          channel,
       </if>
       <if test="des != null" >
           DES,
@@ -42,11 +42,11 @@
           UPDATE_TIME
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="yad901 != null" >
-        #{yad901,jdbcType=VARCHAR},
+      <if test="out_platform_id != null" >
+        #{out_platform_id,jdbcType=VARCHAR},
       </if>
-      <if test="yad961 != null" >
-        #{yad961,jdbcType=TINYINT},
+      <if test="channel != null" >
+        #{channel,jdbcType=TINYINT},
       </if>
       <if test="des != null" >
         #{des,jdbcType=VARCHAR},
@@ -59,34 +59,34 @@
   <update id="updateAccountByAccountId" parameterType="com.yinhai.shh.account.domain.AccountDomain" >
     update yw_account
     <set >
-        <if test="yad901 != null" >
-            YAD901 = #{yad901,jdbcType=VARCHAR},
+        <if test="out_platform_id != null" >
+            OUT_PLATFORM_ID = #{out_platform_id,jdbcType=VARCHAR},
         </if>
-        <if test="yad961 != null" >
-            YAD961 = #{yad961,jdbcType=VARCHAR},
+        <if test="channel != null" >
+            CHANNEL = #{channel,jdbcType=VARCHAR},
         </if>
         <if test="des != null" >
             DES = #{des,jdbcType=VARCHAR},
         </if>
         UPDATE_TIME = now()
     </set>
-    where YAD901 = #{yad901,jdbcType=VARCHAR}
-      AND YAD961 = #{yad961,jdbcType=VARCHAR}
+    where OUT_PLATFORM_ID = #{out_platform_id,jdbcType=VARCHAR}
+      AND CHANNEL = #{channel,jdbcType=VARCHAR}
   </update>
   
   <resultMap id="BaseResultMap" type="com.yinhai.shh.account.domain.AccountDomain" >
-    <result column="YAD901" property="yad901" jdbcType="VARCHAR" />
-    <result column="YAD961" property="yad961" jdbcType="VARCHAR" />
+    <result column="OUT_PLATFORM_ID" property="out_platform_id" jdbcType="VARCHAR" />
+    <result column="CHANNEL" property="channel" jdbcType="VARCHAR" />
     <result column="DES" property="des" jdbcType="VARCHAR" />
     <result column="CREATE_TIME" property="create_time" jdbcType="TIMESTAMP" />
     <result column="UPDATE_TIME" property="update_time" jdbcType="TIMESTAMP" />
   </resultMap>
   <select id="querySingleAccount" parameterType="pp" resultMap="BaseResultMap">
     select 
-    	 YAD901, YAD961, DES, CREATE_TIME, UPDATE_TIME
+    	 OUT_PLATFORM_ID, CHANNEL, DES, CREATE_TIME, UPDATE_TIME
     from yw_account
-    where YAD901 = #{yad901,jdbcType=VARCHAR}
-      AND YAD961 = #{yad961,jdbcType=VARCHAR}
+    where OUT_PLATFORM_ID = #{out_platform_id,jdbcType=VARCHAR}
+      AND CHANNEL = #{channel,jdbcType=VARCHAR}
   </select>
 
 </mapper>

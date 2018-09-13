@@ -20,12 +20,12 @@
 	                <div class="ibox-content">
 	                	<form id="form1" class="form-inline m-b" role="form">
 	                		<div class="form-group">
-						  	  	<label for="yad901" class="sr-only">账户ID</label>
-							  	<input id="yad901" type="text" name="yad901" class="form-control" onchange="queryGrid()" placeholder="账户ID">
+						  	  	<label for="out_platform_id" class="sr-only">账户ID</label>
+							  	<input id="out_platform_id" type="text" name="out_platform_id" class="form-control" onchange="queryGrid()" placeholder="账户ID">
 							</div>
 							<div class="form-group">
-								<label for="yad961" class="sr-only">渠道</label>
-								<select class="form-control" id="yad961" name="yad961" onchange="queryGrid()" >
+								<label for="channel" class="sr-only">渠道</label>
+								<select class="form-control" id="channel" name="channel" onchange="queryGrid()" >
 									<option value="">请选择渠道</option>
 									<c:forEach var="type" items="${qd_type}">
 										<option value="${type.codeValue}">${type.codeValueName}</option>
@@ -46,10 +46,10 @@
 							<ec:grid id="account" title=""  fit="true" fitColumns="true" showRowno="true" pagination="true" dataurl="${basePath}shh/account/accountManager/queryAccountList"  showck="true" singleSelect="false">
 								<ec:gridToolbar>
 									<button type="button" class="btn btn-primary btn-sm" onclick="createAccout()"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;新增账户</button>
-									<button type="button" class="btn btn-outline btn-default btn-sm" onclick="$('#form1')[0].reset();queryGrid();"><i class="fa fa-refresh"></i>&nbsp;&nbsp;重置查询</button>
+									<button type="button" class="btn btn-primary btn-sm" onclick="$('#form1')[0].reset();queryGrid();"><i class="fa fa-refresh"></i>&nbsp;&nbsp;重置查询</button>
 								</ec:gridToolbar>
-								<ec:gridItem itemId="yad901" itemName="账户ID"></ec:gridItem>
-								<ec:gridItem itemId="yad961" itemName="渠道" collection="QD_TYPE"></ec:gridItem>
+								<ec:gridItem itemId="out_platform_id" itemName="账户ID"></ec:gridItem>
+								<ec:gridItem itemId="channel" itemName="渠道" collection="QD_TYPE"></ec:gridItem>
 								<ec:gridItem itemId="des" itemName="账号描述"></ec:gridItem>
 								<ec:gridItem itemId="create_time" itemName="创建时间" formatter="CommonFormatter.format"></ec:gridItem>
 								<ec:gridItem itemId="update_time" itemName="最后更新时间" formatter="CommonFormatter.format"></ec:gridItem>
@@ -134,13 +134,13 @@ function createAccout() {
 
 function optionsf(value,data,index){
 	var arr = [];
-	arr.push('<a class="btn btn-primary btn-xs" onclick="editAccount('+data.yad901+','+data.yad961+')">编辑</a>');
-	arr.push('<a class="btn btn-warning btn-xs" onclick="getMoreBindInfo('+data.yad901+','+data.yad961+')">绑定详情</a>');
+	arr.push('<a class="btn btn-primary btn-xs" onclick="editAccount('+data.out_platform_id+','+data.channel+')">编辑</a>');
+	arr.push('<a class="btn btn-warning btn-xs" onclick="getMoreBindInfo('+data.out_platform_id+','+data.channel+')">绑定详情</a>');
 	return arr.join(' ');
 }
 
-function getMoreBindInfo(yad901,yad961) {
-    var url = Base.globvar.basePath + "shh/account/accountManager/getMoreBindInfo?yad901="+yad901+"&yad961="+yad961;
+function getMoreBindInfo(out_platform_id,channel) {
+    var url = Base.globvar.basePath + "shh/account/accountManager/getMoreBindInfo?out_platform_id="+out_platform_id+"&channel="+channel;
     top.Base.openIframe({
         title:'新增用户',
         href : url,
@@ -152,8 +152,8 @@ function getMoreBindInfo(yad901,yad961) {
     });
 }
 
-function editAccount(yad901,yad961){
-	var url = Base.globvar.basePath + "shh/account/accountManager/createAccount?yad901="+yad901+"&yad961="+yad961;
+function editAccount(out_platform_id,channel){
+	var url = Base.globvar.basePath + "shh/account/accountManager/createAccount?out_platform_id="+out_platform_id+"&channel="+channel;
 	top.Base.openIframe({
 		title:'编辑用户信息',
 		href : url,

@@ -58,7 +58,7 @@ public class AccountManagerController extends BaseController{
 		PageParam pageParam = getPageParam(request);
 		List<AppCodeDomain> qd_type = getAppCodeByCodeString("qd_type");
 		modelMap.put("qd_type", qd_type);
-		if(pageParam.get("yad901") != null && pageParam.get("yad961") != null){
+		if(pageParam.get("out_platform_id") != null && pageParam.get("channel") != null){
 			AccountDomain account = accountManagerService.querySingleAccount(pageParam);
 			modelMap.put("smallTitle", "账户编辑");
 			modelMap.put("account", account);

@@ -56,30 +56,34 @@
         </div>
     </form>
 </div>
-<div class="container-fluid" style="height: 500px;">
+<div class="container-fluid" style="height: 550px;">
     <ec:grid id="goods" title="文章列表" fit="true" fitColumns="true" pageSize="10" showRowno="true" pagination="true"
              dataurl="${basePath}shh/article/articleManager/artilceList">
         <ec:gridToolbar>
-            <button type="button" class="btn btn-outline btn-default btn-sm" onclick="queryGrid()"><i
+            <button type="button" class="btn btn-primary  btn-sm" onclick="queryGrid()"><i
                     class="fa fa-undo"></i>&nbsp;&nbsp;查询
             </button>
-            <button type="button" class="btn btn-outline btn-default btn-sm" onclick="resetQuery()"><i
+            <button type="button" class="btn btn-primary  btn-sm" onclick="resetQuery()"><i
                     class="fa fa-refresh"></i>&nbsp;&nbsp;重置查询
             </button>
             <button type="button" class="btn btn-primary btn-sm" onclick="fnOpenWindow('add')"><i
-                    class="fa fa-plus-square"></i>&nbsp;&nbsp;新增分类
+                    class="fa fa-plus-square"></i>&nbsp;&nbsp;新增文章
             </button>
         </ec:gridToolbar>
         <ec:gridItem itemId="article_id" itemName="article_id" hidden="true"></ec:gridItem>
         <ec:gridItem itemId="cate_id" itemName="cate_id" hidden="true"></ec:gridItem>
-        <ec:gridItem itemId="title" width="20%" itemName="文章标题" showDetail="true"></ec:gridItem>
-        <ec:gridItem itemId="cate_name" itemName="文章类别"></ec:gridItem>
+        <ec:gridItem itemId="title"  itemName="文章标题" width="200" showDetail="true"></ec:gridItem>
+        <ec:gridItem itemId="cate_name" itemName="文章分类"></ec:gridItem>
+        <ec:gridItem itemId="fromto" itemName="来源"></ec:gridItem>
+        <ec:gridItem itemId="add_username" itemName="发布人"></ec:gridItem>
+        <ec:gridItem itemId="article_top" itemName="是否置顶" collection="ART_TOP"></ec:gridItem>
+        <ec:gridItem itemId="cate_type" itemName="文章类型"></ec:gridItem>
         <ec:gridItem itemId="keywords" itemName="关键字"></ec:gridItem>
         <ec:gridItem itemId="sort_order" itemName="文章排序号"></ec:gridItem>
         <ec:gridItem itemId="publish_time" itemName="发布时间" showDetail="true"></ec:gridItem>
         <ec:gridItem itemId="status" itemName="文章状态" align="center" halign="center"
                      formatter="formatterStatus"></ec:gridItem>
-        <ec:gridItem itemId="options" itemName="操作" formatter="optionsf" width="50"></ec:gridItem>
+        <ec:gridItem itemId="options" itemName="操作" formatter="optionsf" ></ec:gridItem>
     </ec:grid>
 </div>
 </body>
@@ -207,11 +211,11 @@
         var arr = [];
         var audit = "${audit}";
         if (audit === "1") {
-            arr.push('<i class="fa fa-check" style="font-size: 16px;" title="审核文章" onclick="fnOpenWindow(\'audit\', ' + data.article_id + ', ' + status + ')"></i>');
+            arr.push('<i class="fa fa-check btn-warning" style="font-size: 16px;" title="审核文章" onclick="fnOpenWindow(\'audit\', ' + data.article_id + ', ' + status + ')"></i>');
         }
-        arr.push('<i class="fa fa-edit" style="font-size: 16px;" title="编辑文章" onclick="fnOpenWindow(\'edit\', ' + data.article_id + ')"></i>');
-        arr.push('<i class="fa fa-eye" style="font-size: 16px;" title="预览文章" onclick="fnOpenWindow(\'preview\', ' + data.article_id + ')"></i>');
-        arr.push('<i class="fa fa-remove" style="font-size: 16px;" title="删除文章" onclick="delArticle(' + data.article_id + ', ' + status + ')"></i>');
+        arr.push('<i class="fa fa-edit btn-info" style="font-size: 16px;" title="编辑文章" onclick="fnOpenWindow(\'edit\', ' + data.article_id + ')"></i>');
+        arr.push('<i class="fa fa-eye btn-primary" style="font-size: 16px;" title="预览文章" onclick="fnOpenWindow(\'preview\', ' + data.article_id + ')"></i>');
+        arr.push('<i class="fa fa-remove btn-danger" style="font-size: 16px;" title="删除文章" onclick="delArticle(' + data.article_id + ', ' + status + ')"></i>');
         return arr.join(' ');
     }
 

@@ -13,18 +13,18 @@
     <form id="form1" method="post" class="form-horizontal">
         <input id="edit" name="edit" type="hidden" value="${edit}">
         <div class="form-group">
-            <label for="yad901" class="control-label"><span style="color: red;">*</span>账户ID</label>
-            <input id="yad901" name="yad901" type="text" class="form-control" placeholder="请输入账户ID"
-                   value="${account.yad901}"/>
+            <label for="out_platform_id" class="control-label"><span style="color: red;">*</span>账户ID</label>
+            <input id="out_platform_id" name="out_platform_id" type="text" class="form-control" placeholder="请输入账户ID"
+                   value="${account.out_platform_id}"/>
         </div>
         <div class="form-group">
-            <label for="yad961" class="control-label"><span style="color: red;">*</span>渠道</label>
-            <select class="form-control" id="yad961" name="yad961">
+            <label for="channel" class="control-label"><span style="color: red;">*</span>渠道</label>
+            <select class="form-control" id="channel" name="channel">
                 <c:forEach var="type" items="${qd_type}">
-                    <c:if test="${type.codeValue == account.yad961}">
+                    <c:if test="${type.codeValue == account.channel}">
                         <option value="${type.codeValue}" selected="true">${type.codeValueName}</option>
                     </c:if>
-                    <c:if test="${type.codeValue != account.yad961}">
+                    <c:if test="${type.codeValue != account.channel}">
                         <option value="${type.codeValue}">${type.codeValueName}</option>
                     </c:if>
                 </c:forEach>
@@ -70,7 +70,7 @@
                 });
             },
             fields: {
-                yad901: {
+                out_platform_id: {
                     validators: {
                         notEmpty: {
                             message: "账号ID不能为空"
@@ -81,7 +81,7 @@
                         }
                     }
                 },
-                yad961: {
+                channel: {
                     validators: {
                         notEmpty: {
                             message: "渠道不能为空"

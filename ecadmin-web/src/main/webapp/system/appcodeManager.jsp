@@ -95,7 +95,7 @@
 			<div class="form-group">
 				<label for="codeValue" class="col-sm-3 control-label"><span style="color: red;">*</span>值</label>
 				<div class="col-sm-9">
-					<input id="codeValue" name="codeValue" type="number" class="form-control"
+					<input id="codeValue" name="codeValue" type="text" class="form-control"
 						placeholder="值">
 				</div>
 			</div>
@@ -187,8 +187,8 @@ function initForm(){
         				message:"类别不能为空"
         			},
         			stringLength: {
-                        max: 10,
-                        message: "最多输入10个字"
+                        max: 15,
+                        message: "最多输入15个字"
                     }
         		}
         	},
@@ -208,7 +208,8 @@ function initForm(){
         			notEmpty: {
         				message:"值不能为空"
         			},
-        			integer: {
+                    stringLength: {
+        			    max:6,
                         message:"值必须是正整数"
                     }
         		}

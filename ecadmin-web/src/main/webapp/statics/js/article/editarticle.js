@@ -164,31 +164,34 @@ useKindEditor.prototype = function() {
 	function main() {
 		KindEditor.ready(function(K) {
 			keditor = K.create('#kind_content', {
-				uploadJson: Base.globvar.basePath + "shh/article/articleManager/upLoadFile",
-				afterUpload : function(url) {
-                    Base.alert("上传图片成功！");
-				},
+				// uploadJson: Base.globvar.basePath + "shh/article/articleManager/upLoadFile",
+				// afterUpload : function(url) {
+                 //    Base.alert("上传图片成功！");
+				// },
+                allowFlashUpload:false,
+                allowImageUpload:false,
+                allowMediaUpload:false,
 				keepNbsp: true,
 			});
 			//上传附件
-			var uploadbutton = K.uploadbutton({
-			        button : K('#file_url_button')[0],
-			        fieldName : 'imgFile',
-			        url : Base.globvar.basePath + "shh/article/articleManager/upLoadFuJian",
-			        afterUpload : function(data) {
-			        		Base.removeMask();
-			                if (data.error === 0) {
-			                        $("#file_url_value").val(data.url);
-			                        $("#file_url").val(data.file_url);
-			                } else {
-			                        Base.alert(data.message);
-			                }
-			        }
-			});
-			uploadbutton.fileBox.change(function(e) {
-				Base.showMask();
-		        uploadbutton.submit();
-			});
+			// var uploadbutton = K.uploadbutton({
+			//         button : K('#file_url_button')[0],
+			//         fieldName : 'imgFile',
+			//         url : Base.globvar.basePath + "shh/article/articleManager/upLoadFuJian",
+			//         afterUpload : function(data) {
+			//         		Base.removeMask();
+			//                 if (data.error === 0) {
+			//                         $("#file_url_value").val(data.url);
+			//                         $("#file_url").val(data.file_url);
+			//                 } else {
+			//                         Base.alert(data.message);
+			//                 }
+			//         }
+			// });
+			// uploadbutton.fileBox.change(function(e) {
+			// 	Base.showMask();
+		     //    uploadbutton.submit();
+			// });
 		});
 	}
 	return {
