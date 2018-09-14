@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hy.reg.manager">
+
+    <resultMap id="BaseResultMap" type="map">
+        <id column="ORDER_ID" property="orderId"/>
+        <result column="PATID" property="patid"/>
+        <result column="PAT_NAME" property="patName"/>
+        <result column="IDCARD" property="idcard"/>
+        <result column="CARDNO" property="cardno"/>
+        <result column="TSCID" property="tscid"/>
+        <result column="SEQNUM" property="seqnum"/>
+        <result column="TSCDATE" property="tscdate"/>
+        <result column="YYDJH" property="yydjh"/>
+        <result column="DEPTID" property="deptid"/>
+        <result column="DEPTNAME" property="deptname"/>
+        <result column="DRID" property="drid"/>
+        <result column="DRNAME" property="drname"/>
+        <result column="DRTITLE" property="drtitle"/>
+        <result column="REGFEE" property="regfee"/>
+        <result column="TREATFEE" property="treatfee"/>
+        <result column="REGAMT" property="regamt"/>
+        <result column="STATUS" property="status"/>
+        <result column="ADD_TIME" property="addTime"/>
+        <result column="LAST_UPDATE" property="lastUpdate"/>
+        <result column="minutes" property="minutes"/>
+    </resultMap>
+
+    <sql id="table-name">yw_registration_detail</sql>
+
+    <sql id="all-column">ORDER_ID ,PATID ,PAT_NAME ,IDCARD ,CARDNO ,TSCID ,SEQNUM ,date_format(TSCDATE,'%Y-%m-%d %H:%i:%S') as  TSCDATE ,YYDJH ,DEPTID ,DEPTNAME ,DRID ,DRNAME ,DRTITLE ,REGFEE ,TREATFEE ,REGAMT ,STATUS ,date_format(ADD_TIME,'%Y-%m-%d %H:%i:%S') as  ADD_TIME ,date_format(LAST_UPDATE,'%Y-%m-%d %H:%i:%S') as  LAST_UPDATE	,TIMESTAMPDIFF(MINUTE, ADD_TIME, now()) as minutes </sql>
+
+    <sql id="all-query-condition">
+        <if test="orderId != null and orderId != ''">
+            <![CDATA[	and INSTR(ORDER_ID, #{orderId})  > 0        ]]>
+        </if>
+        <if test="patid != null and patid != ''">
+            <![CDATA[	and INSTR(PATID, #{patid})  > 0        ]]>
+        </if>
+        <if test="patName != null and patName != ''">
+            <![CDATA[	and INSTR(PAT_NAME, #{patName})  > 0        ]]>
+        </if>
+        <if test="idcard != null and idcard != ''">
+            <![CDATA[	and INSTR(IDCARD, #{idcard})  > 0        ]]>
+        </if>
+        <if test="cardno != null and cardno != ''">
+            <![CDATA[	and INSTR(CARDNO, #{cardno})  > 0        ]]>
+        </if>
+        <if test="tscid != null and tscid != ''">
+            <![CDATA[	and INSTR(TSCID, #{tscid})  > 0        ]]>
+        </if>
+        <if test="seqnum != null and seqnum != ''">
+            and SEQNUM = #{seqnum}
+        </if>
+        <if test="add_time_value_ts != null and add_time_value_ts != ''">
+            <![CDATA[ and date_format(TSCDATE, '%Y-%m-%d %H:%i:%S') >= #{tsstartDate} and	date_format(TSCDATE, '%Y-%m-%d %H:%i:%S') <= #{tsendDate} ]]>
+        </if>
+        <if test="yydjh != null and yydjh != ''">
+            <![CDATA[	and INSTR(YYDJH, #{yydjh})  > 0        ]]>
+        </if>
+        <if test="deptid != null and deptid != ''">
+            <![CDATA[	and INSTR(DEPTID, #{deptid})  > 0        ]]>
+        </if>
+        <if test="deptname != null and deptname != ''">
+            <![CDATA[	and INSTR(DEPTNAME, #{deptname})  > 0        ]]>
+        </if>
+        <if test="drid != null and drid != ''">
+            <![CDATA[	and INSTR(DRID, #{drid})  > 0        ]]>
+        </if>
+        <if test="drname != null and drname != ''">
+            <![CDATA[	and INSTR(DRNAME, #{drname})  > 0        ]]>
+        </if>
+        <if test="drtitle != null and drtitle != ''">
+            <![CDATA[	and INSTR(DRTITLE, #{drtitle})  > 0        ]]>
+        </if>
+        <if test="regfee != null and regfee != ''">
+            and REGFEE = #{regfee}
+        </if>
+        <if test="treatfee != null and treatfee != ''">
+            and TREATFEE = #{treatfee}
+        </if>
+        <if test="regamt != null and regamt != ''">
+            and REGAMT = #{regamt}
+        </if>
+        <if test="status != null and status != ''">
+            and STATUS = #{status}
+        </if>
+        <if test="add_time_value != null and add_time_value != ''">
+            <![CDATA[ and date_format(ADD_TIME, '%Y-%m-%d %H:%i:%S') >= #{startDate} and	date_format(ADD_TIME, '%Y-%m-%d %H:%i:%S') <= #{endDate} ]]>
+        </if>
+        <if test="lastUpdate != null and drtitle != ''">
+            and LAST_UPDATE = #{lastUpdate}
+        </if>
+    </sql>
+
+
+
+
+
+
+
+    <!-- Query By Cond -->
+    <select id="queryByCond" resultMap="BaseResultMap"
+            parameterType="map">
+        select
+        <include refid="all-column"/>
+        from
+        <include refid="table-name"/>
+        where 1=1
+        <include refid="all-query-condition"/>
+    </select>
+
+    <!-- Query By Cond -->
+    <select id="queryListPageRegManager" resultMap="BaseResultMap" parameterType="pp">
+        select <include refid="all-column" /> from <include refid="table-name"/>
+        where 1=1 <include refid="all-query-condition"/>
+    </select>
+    <!-- Update By Primary Key -->
+    <update id="updateRegistrationDetailByOrderId" parameterType="map">
+        update
+        <include refid="table-name"/>
+        <set>
+            <if test="orderId != null and orderId != ''">
+                ORDER_ID = #{orderId},
+            </if>
+            <if test="patid != null and patid != ''">
+                PATID = #{patid},
+            </if>
+            <if test="patName != null and patName != ''">
+                PAT_NAME = #{patName},
+            </if>
+            <if test="idcard != null and idcard != ''">
+                IDCARD = #{idcard},
+            </if>
+            <if test="cardno != null and cardno != ''">
+                CARDNO = #{cardno},
+            </if>
+            <if test="tscid != null and tscid != ''">
+                TSCID = #{tscid},
+            </if>
+            <if test="seqnum != null">
+                SEQNUM = #{seqnum},
+            </if>
+            <if test="tscdate != null">
+                TSCDATE = #{tscdate},
+            </if>
+            <if test="yydjh != null and yydjh != ''">
+                YYDJH = #{yydjh},
+            </if>
+            <if test="deptid != null and deptid != ''">
+                DEPTID = #{deptid},
+            </if>
+            <if test="deptname != null and deptname != ''">
+                DEPTNAME = #{deptname},
+            </if>
+            <if test="drid != null and drid != ''">
+                DRID = #{drid},
+            </if>
+            <if test="drname != null and drname != ''">
+                DRNAME = #{drname},
+            </if>
+            <if test="drtitle != null and drtitle != ''">
+                DRTITLE = #{drtitle},
+            </if>
+            <if test="regfee != null">
+                REGFEE = #{regfee},
+            </if>
+            <if test="treatfee != null">
+                TREATFEE = #{treatfee},
+            </if>
+            <if test="regamt != null">
+                REGAMT = #{regamt},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="addTime != null">
+                ADD_TIME = #{addTime},
+            </if>
+                LAST_UPDATE = now()
+        </set>
+        <where>ORDER_ID = #{orderId}</where>
+    </update>
+
+</mapper>

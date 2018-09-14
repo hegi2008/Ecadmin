@@ -120,7 +120,7 @@
                     class="fa fa-refresh"></i>&nbsp;&nbsp;重置查询
             </button>
         </ec:gridToolbar>
-        <ec:gridItem itemId="orderId" itemName="订单编号" width="200"  showDetail="true"></ec:gridItem>
+        <ec:gridItem itemId="orderId" itemName="订单编号" width="230"  showDetail="true"></ec:gridItem>
         <ec:gridItem itemId="patName"  itemName="患者名"  showDetail="true"></ec:gridItem>
         <ec:gridItem itemId="idcard" itemName="身份证" width="200" showDetail="true"></ec:gridItem>
         <ec:gridItem itemId="payAccount" itemName="账户id" width="200" showDetail="true"></ec:gridItem>
@@ -209,10 +209,10 @@
     //订单操作按钮初始化
     function optionsf(value, data, index) {
         var arr = [];
-        arr.push('<i class="fa fa-eye btn-primary" style="font-size: 16px;" title="订单详情" onclick="toSettment(\'' + data.orderId + '\')"></i>');
+        arr.push('<i class="fa fa-eye btn-primary" style="font-size: 16px;" title="订单详情" onclick="toDetail(\'' + data.orderId + '\')"></i>');
         arr.push('<i class="fa fa-money btn-info" style="font-size: 16px;" title="结算详情" onclick="toSettment(\'' + data.orderId + '\')"></i>');
-        arr.push('<i class="fa fa-edit btn-warning" style="font-size: 16px;" title="修改订单" onclick=""></i>');
-        arr.push('<i class="fa fa-remove btn-danger" style="font-size: 16px;" title="退费" onclick=""></i>');
+        arr.push('<i class="fa fa-edit btn-warning" style="font-size: 16px;" title="修改订单" onclick="toEdit(\''+data.orderId+'\')"></i>');
+        arr.push('<i class="fa fa-remove btn-danger" style="font-size: 16px;" title="退费" onclick="refund(\''+data.orderId+'\',\''+data.payResult+'\')"></i>');
         return arr.join(' ');
     }
     //订单结算页面
@@ -221,12 +221,61 @@
         top.Base.openIframe({
             title:'结算详情',
             href : url,
-            width		: '800px',
-            height		: '550px',
+            width		: '900px',
+            height		: '400px',
             afterClose : function(){
-                Base.reloadGridData("account");
+                Base.reloadGridData("orders");
             }
         });
+    }
+    //订单详情页面
+    function toDetail(orderId) {
+        var url = Base.globvar.basePath + "shh/order/orderManager/toDetail?orderId="+orderId;
+        top.Base.openIframe({
+            href : url,
+            width		: '700px',
+            height		: '550px',
+            afterClose : function(){
+                Base.reloadGridData("orders");
+            }
+        });
+    }
+    //修改订单页面
+    function toEdit(orderId) {
+        var url = Base.globvar.basePath + "shh/order/orderManager/toEditDetail?orderId="+orderId;
+        top.Base.openIframe({
+            href : url,
+            width		: '700px',
+            height		: '550px',
+            afterClose : function(){
+                Base.reloadGridData("orders");
+            }
+        });
+    }
+    //退费
+    function refund(orderId,payResult) {
+        if (payResult != '02') {
+            Base.alert("订单状态暂不支持退费!");
+            return false;
+        }
+        Base.confirm("退费将直接退还资金，请保证his业务状态正确!确认退费？！", function (flag) {
+            if (!flag) {
+                return false;
+            }
+            Base.ajax({
+                type: 'post',
+                url: Base.globvar.basePath + "shh/order/orderManager/updateRefund",
+                data: {orderId: orderId},
+                success: function (data) {
+                    if (data.error === false) {
+                        Base.alert("退费成功！");
+                        queryGrid();
+                    } else {
+                        Base.alert("退费失败");
+                    }
+                }
+            });
+        }, "warning")
     }
 
 </script>

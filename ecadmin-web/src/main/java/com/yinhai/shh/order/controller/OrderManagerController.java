@@ -2,6 +2,8 @@ package com.yinhai.shh.order.controller;
 
 import com.yinhai.ec.base.controller.BaseController;
 import com.yinhai.ec.base.util.PageParam;
+import com.yinhai.ec.base.util.ResultBean;
+import com.yinhai.ec.common.domain.AppCodeDomain;
 import com.yinhai.ec.common.util.StringUtils;
 import com.yinhai.shh.order.domain.OrderSettlementEntity;
 import com.yinhai.shh.order.service.OrderService;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("shh/order/orderManager")
@@ -42,21 +46,29 @@ public class OrderManagerController extends BaseController{
 		return pageParam.toDatagridMap();
 	}
 	
-	@RequestMapping("/createOrder")
-	public String createOrder(ModelMap modelMap, HttpServletRequest request){
-		return null;
-	}
-	
-	@RequestMapping("/saveOrder")
-	@ResponseBody
-	public Object saveOrder(HttpServletRequest request){
-		return null;
-	}
-	
 	@RequestMapping("/updateOrder")
 	@ResponseBody
-	public Object updateOrder(HttpServletRequest request){
-		return null;
+	public Object updateOrder(HttpServletRequest request) throws Exception {
+		ResultBean bean = getResultBean();
+		//创建参数对象
+		PageParam pageParam = getPageParam(request);
+		orderService.updateOrder(pageParam.getMap());
+		bean.setError_msg("修改成功");
+		return bean;
+	}
+	@RequestMapping("/updateRefund")
+	@ResponseBody
+	public Object updateRefund(HttpServletRequest request) throws Exception {
+		ResultBean bean = getResultBean();
+		//todo 调用退费接口
+		//创建参数对象
+		PageParam pageParam = getPageParam(request);
+		Map param = pageParam.getMap();
+		param.put("hisResult","04");//设置his业务退费
+		param.put("payResult","04");//设置支付状态退费
+		orderService.updateOrder(param);
+		bean.setError_msg("退费成功");
+		return bean;
 	}
 	@RequestMapping("/toSettle")
 	public String toSettle(ModelMap modelMap, HttpServletRequest request) throws Exception {
@@ -66,6 +78,54 @@ public class OrderManagerController extends BaseController{
 			modelMap.put("orderId",pageParam.getString("orderId"));
 		}
 		return "/shh/order/settle.jsp";
+	}
+	@RequestMapping("/toDetail")
+	public String toDetail(ModelMap modelMap, HttpServletRequest request) throws Exception {
+		//创建参数对象
+		PageParam pageParam = getPageParam(request);
+		List<AppCodeDomain> hisresults = getAppCodeByCodeString("HISRESULT");
+		List<AppCodeDomain> pay_types = getAppCodeByCodeString("PAY_TYPE");
+		List<AppCodeDomain> payways = getAppCodeByCodeString("PAYWAY");
+		List<AppCodeDomain> paychannels = getAppCodeByCodeString("PAYCHANNEL");
+		List<AppCodeDomain> pay_results = getAppCodeByCodeString("PAY_RESULT");
+		List<AppCodeDomain> ywlxs = getAppCodeByCodeString("YWLX");
+		modelMap.put("hisresults",hisresults);
+		modelMap.put("pay_types",pay_types);
+		modelMap.put("payways",payways);
+		modelMap.put("paychannels",paychannels);
+		modelMap.put("pay_results",pay_results);
+		modelMap.put("ywlxs",ywlxs);
+		if(pageParam.getString("orderId") != null && !"".equals(pageParam.getString("orderId").trim())){
+			Map param = new HashMap();
+			param.put("orderId",pageParam.getString("orderId"));
+			Map order = orderService.querySingleOrder(param);
+			modelMap.put("order",order);
+		}
+		return "/shh/order/orderDetail.jsp";
+	}
+	@RequestMapping("/toEditDetail")
+	public String toEditDetail(ModelMap modelMap, HttpServletRequest request) throws Exception {
+		//创建参数对象
+		PageParam pageParam = getPageParam(request);
+		List<AppCodeDomain> hisresults = getAppCodeByCodeString("HISRESULT");
+		List<AppCodeDomain> pay_types = getAppCodeByCodeString("PAY_TYPE");
+		List<AppCodeDomain> payways = getAppCodeByCodeString("PAYWAY");
+		List<AppCodeDomain> paychannels = getAppCodeByCodeString("PAYCHANNEL");
+		List<AppCodeDomain> pay_results = getAppCodeByCodeString("PAY_RESULT");
+		List<AppCodeDomain> ywlxs = getAppCodeByCodeString("YWLX");
+		modelMap.put("hisresults",hisresults);
+		modelMap.put("pay_types",pay_types);
+		modelMap.put("payways",payways);
+		modelMap.put("paychannels",paychannels);
+		modelMap.put("pay_results",pay_results);
+		modelMap.put("ywlxs",ywlxs);
+		if(pageParam.getString("orderId") != null && !"".equals(pageParam.getString("orderId").trim())){
+			Map param = new HashMap();
+			param.put("orderId",pageParam.getString("orderId"));
+			Map order = orderService.querySingleOrder(param);
+			modelMap.put("order",order);
+		}
+		return "/shh/order/orderEdit.jsp";
 	}
 	@RequestMapping("/getSettle")
 	@ResponseBody
@@ -80,6 +140,23 @@ public class OrderManagerController extends BaseController{
 			orderSettlementEntityList = orderSettleService.querySettleRecords(orderSettlementEntity);
 		}
 		return orderSettlementEntityList;
+	}
+	@RequestMapping("/getOrderDetail")
+	@ResponseBody
+	public Object getOrderDetail(ModelMap modelMap, HttpServletRequest request) throws Exception {
+		//创建参数对象
+		PageParam pageParam = getPageParam(request);
+		ResultBean bean = new ResultBean();
+		bean.setError(true);
+		if(pageParam.getString("orderId") != null && !"".equals(pageParam.getString("orderId").trim())){
+			Map param = new HashMap();
+			param.put("orderId",pageParam.getString("orderId"));
+			Map order = orderService.querySingleOrder(param);
+			if(order != null && order.size()>0){
+				bean.setError(false);
+			}
+		}
+		return bean;
 	}
  }
  

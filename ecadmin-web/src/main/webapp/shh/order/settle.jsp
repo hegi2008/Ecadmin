@@ -8,7 +8,7 @@
     <link href="<%=basePath%>UI/plugins/easyui/easyui.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container-fluid" style="height: 500px;">
+<div class="container-fluid" style="height: 300px;">
     <ec:grid id="settles" title="结算列表" fit="true"  pageSize="10"  showRowno="true"   showHeaderContextMenu="true"
              dataurl="${basePath}shh/order/orderManager/getSettle?orderId=${orderId}">
         <ec:gridItem itemId="orderId" itemName="订单编号" width="230"  showDetail="true"></ec:gridItem>
