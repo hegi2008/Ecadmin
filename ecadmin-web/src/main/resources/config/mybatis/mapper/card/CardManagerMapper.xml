@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hy.card.manager">
+
+	<resultMap id="BaseResultMap" type="map">
+		<result column="OUT_PLATFORM_ID" property="outPlatformId" />
+		<result column="CHANNEL" property="channel" />
+		<result column="AGENCY_NUM" property="agencyNum" />
+		<result column="IDCARD_NO" property="idcardNo" />
+		<result column="PATID" property="patid" />
+		<result column="PAT_NAME" property="patName" />
+		<result column="MOBILE" property="mobile" />
+		<result column="ADDRESS" property="address" />
+		<result column="CARDNO" property="cardno" />
+		<result column="STATUS" property="status" />
+		<result column="TYPE" property="type" />
+		<result column="RELATIONSHIP" property="relationship" />
+		<result column="BIND_TIME" property="bindTime" />
+		<result column="LAST_UPDATETIME" property="lastUpdatetime" />
+	</resultMap>
+
+	<sql id="table-name">yw_card_manager</sql>
+
+	<sql id="all-column">OUT_PLATFORM_ID ,CHANNEL ,AGENCY_NUM ,IDCARD_NO ,PATID ,PAT_NAME ,MOBILE ,ADDRESS ,CARDNO ,STATUS ,TYPE ,RELATIONSHIP ,date_format(BIND_TIME,'%Y-%m-%d %H:%i:%S') as  BIND_TIME ,date_format(LAST_UPDATETIME,'%Y-%m-%d %H:%i:%S') as  LAST_UPDATETIME 	</sql>
+
+	<sql id="all-query-condition">
+	   <if test="outPlatformId != null and outPlatformId != ''">
+		   <![CDATA[	and INSTR(OUT_PLATFORM_ID, #{outPlatformId})  > 0        ]]>
+    </if>
+	   <if test="channel != null and channel != ''">
+	      and CHANNEL = #{channel}
+    </if>
+	   <if test="agencyNum != null and agencyNum != ''">
+		   <![CDATA[	and INSTR(AGENCY_NUM, #{agencyNum})  > 0        ]]>
+    </if>
+	   <if test="idcardNo != null and idcardNo != ''">
+		   <![CDATA[	and INSTR(IDCARD_NO, #{idcardNo})  > 0        ]]>
+    </if>
+	   <if test="patid != null and patid != ''">
+		   <![CDATA[	and INSTR(PATID, #{patid})  > 0        ]]>
+    </if>
+	   <if test="patName != null and patName != ''">
+		   <![CDATA[	and INSTR(PAT_NAME, #{patName})  > 0        ]]>
+    </if>
+	   <if test="mobile != null and mobile != ''">
+		   <![CDATA[	and INSTR(MOBILE, #{mobile})  > 0        ]]>
+    </if>
+	   <if test="address != null and address != ''">
+		   <![CDATA[	and INSTR(ADDRESS, #{address})  > 0        ]]>
+    </if>
+	   <if test="cardno != null and cardno != ''">
+		   <![CDATA[	and INSTR(CARDNO, #{cardno})  > 0        ]]>
+    </if>
+		<if test="status != null and status != ''">
+	      and STATUS = #{status}
+    </if>
+		<if test="type != null and type != ''">
+	      and TYPE = #{type}
+    </if>
+		<if test="relationship != null and relationship != ''">
+	      and RELATIONSHIP = #{relationship}
+    </if>
+		<if test="add_time_value != null and add_time_value != ''">
+			<![CDATA[ and date_format(BIND_TIME, '%Y-%m-%d %H:%i:%S') >= #{startDate} and	date_format(BIND_TIME, '%Y-%m-%d %H:%i:%S') <= #{endDate} ]]>
+		</if>
+		<if test="lastUpdatetime != null and lastUpdatetime != ''">
+	      and LAST_UPDATETIME = #{lastUpdatetime}
+    </if>
+	</sql>
+	
+	
+
+	
+	<!-- Query By Cond -->
+	<select id="queryByCond" resultMap="BaseResultMap" parameterType="map">
+		select <include refid="all-column" /> from <include refid="table-name"/> 
+		where 1=1 <include refid="all-query-condition"/> 
+	</select>
+	<!-- Query By Cond -->
+	<select id="queryListPageCardManager" resultMap="BaseResultMap" parameterType="map">
+		select <include refid="all-column" /> from <include refid="table-name"/>
+		where 1=1 <include refid="all-query-condition"/>
+	</select>
+
+	
+	<!-- Update By Primary Key -->
+	<update id="updateCardManager" parameterType="map">
+		update <include refid="table-name" />
+		<set>
+	   <if test="outPlatformId != null and outPlatformId != ''">
+		        OUT_PLATFORM_ID = #{outPlatformId},
+			</if>
+				   <if test="channel != null and channel != ''">
+		        CHANNEL = #{channel},
+			</if>
+				   <if test="agencyNum != null and agencyNum != ''">
+		        AGENCY_NUM = #{agencyNum},
+			</if>
+				   <if test="idcardNo != null and idcardNo != ''">
+		        IDCARD_NO = #{idcardNo},
+			</if>
+				   <if test="patid != null and patid != ''">
+		        PATID = #{patid},
+			</if>
+				   <if test="patName != null and patName != ''">
+		        PAT_NAME = #{patName},
+			</if>
+				   <if test="mobile != null and mobile != ''">
+		        MOBILE = #{mobile},
+			</if>
+				   <if test="address != null and address != ''">
+		        ADDRESS = #{address},
+			</if>
+				   <if test="cardno != null and cardno != ''">
+		        CARDNO = #{cardno},
+			</if>
+					<if test="status != null">
+		        STATUS = #{status},
+			</if>
+					<if test="type != null">
+		        TYPE = #{type},
+			</if>
+					<if test="relationship != null">
+		        RELATIONSHIP = #{relationship},
+			</if>
+					<if test="bindTime != null">
+		        BIND_TIME = #{bindTime},
+			</if>
+					<if test="lastUpdatetime != null">
+	            LAST_UPDATETIME = now()
+			</if>
+					</set>
+		<where>OUT_PLATFORM_ID = #{outPlatformId} and IDCARD_NO = #{idcardNo} and AGENCY_NUM = #{agencyNum} and  CHANNEL = #{channel}</where>
+	</update>
+	
+	<!-- Delete By primary Keys -->
+	<delete id="deleteCardManagerByStatus">
+		delete from <include refid="table-name" /> 
+		<where>STATUS = #{status}</where>
+	</delete>
+	
+</mapper>

@@ -135,7 +135,6 @@ function createAccout() {
 function optionsf(value,data,index){
 	var arr = [];
 	arr.push('<a class="btn btn-primary btn-xs" onclick="editAccount('+data.out_platform_id+','+data.channel+')">编辑</a>');
-	arr.push('<a class="btn btn-warning btn-xs" onclick="getMoreBindInfo('+data.out_platform_id+','+data.channel+')">绑定详情</a>');
 	return arr.join(' ');
 }
 
