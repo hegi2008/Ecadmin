@@ -20,6 +20,7 @@ public class SymptomsServiceImpl extends BaseServiceImpl implements SymptomsServ
 
     @Override
     public Map<String, Object> saveSymptoms(Map<String, Object> param) {
+        param.remove("symptoms_id");
         sqlSession.insert("hy.symptoms.manager.insert", param);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("error", false);

@@ -27,7 +27,7 @@
             and a.cate_id = #{cate_id,jdbcType=VARCHAR}
         </if>
         <if test="title != null and title != ''">
-            <![CDATA[   and INSTR(a.TITLE, #{title}) > 1       	 ]]>
+            <![CDATA[   and INSTR(a.TITLE, #{title}) > 0       	 ]]>
         </if>
         <if test="recommend_dept != null and recommend_dept != ''">
             <![CDATA[	and INSTR(a.recommend_dept, #{recommend_dept})  > 0        ]]>
@@ -72,7 +72,7 @@
             and a.cate_id = #{cate_id,jdbcType=VARCHAR}
         </if>
         <if test="title != null and title != ''">
-            <![CDATA[   and INSTR(a.TITLE, #{title}) > 1       	 ]]>
+            <![CDATA[   and INSTR(a.TITLE, #{title}) > 0       	 ]]>
         </if>
         <if test="recommend_dept != null and recommend_dept != ''">
             <![CDATA[	and INSTR(a.recommend_dept, #{recommend_dept})  > 0        ]]>
@@ -107,7 +107,7 @@
             and a.cate_id = #{cate_id,jdbcType=VARCHAR}
         </if>
         <if test="title != null and title != ''">
-            <![CDATA[   and INSTR(a.TITLE, #{title}) > 1       	 ]]>
+            <![CDATA[   and INSTR(a.TITLE, #{title}) > 0       	 ]]>
         </if>
         <if test="recommend_dept != null and recommend_dept != ''">
             <![CDATA[	and INSTR(a.recommend_dept, #{recommend_dept})  > 0        ]]>
@@ -137,6 +137,10 @@
         a.title  as title ,
         a.recommend_deptid  as recommend_deptid ,
         a.recommend_dept  as recommend_dept ,
+        a.introduction  as introduction ,
+        a.treatment  as treatment ,
+        a.diagnosis  as diagnosis ,
+        a.cause  as cause ,
         a.sort_order as sort_order,
         a.status as status,
         date_format(a.publish_time,'%Y-%m-%d %H:%i:%S') as publish_time,

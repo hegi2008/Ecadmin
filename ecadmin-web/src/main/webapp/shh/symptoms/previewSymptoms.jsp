@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>久远银海-新闻中心</title>
+    <title>症状详情</title>
     <style type="text/css">
         .div-after {
         }
@@ -63,11 +63,24 @@
 <body>
 <div class="news-article-content div-after">
     <div class="news-left">
-        <p class="news-title">${ae.title }</p>
-        <div class="news-time"><span id="add_time">${ae.add_time }</span><span>|</span>来源：<span
-                id="add_username">${ae.fromto }</span></div>
+        <p class="news-title">症状:${ae.title }</p>
+        <div class="news-time"><span id="add_time">${ae.add_time }</span><span>|</span>推荐科室：<span
+                id="add_username">${ae.recommend_dept }</span></div>
+        <p class="news-title">简介</p>
         <div class="news-article">
-            <div class="news-pshow">${ae.content }</div>
+            <div class="news-pshow">${ae.introduction}</div>
+        </div>
+        <p class="news-title">治疗</p>
+        <div class="news-article">
+            <div class="news-pshow">${ae.treatment}</div>
+        </div>
+        <p class="news-title">诊断</p>
+        <div class="news-article">
+            <div class="news-pshow">${ae.diagnosis}</div>
+        </div>
+        <p class="news-title">病因</p>
+        <div class="news-article">
+            <div class="news-pshow">${ae.cause}</div>
         </div>
     </div>
 </div>

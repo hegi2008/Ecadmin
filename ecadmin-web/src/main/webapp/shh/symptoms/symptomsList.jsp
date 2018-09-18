@@ -27,7 +27,7 @@
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                 <div class="">
                     <label for="recommend_dept" class="control-label">推荐科室</label>
-                    <input id="recommend_dept" type="text" name="recommend_dept'" class="form-control" placeholder="请输入推荐科室">
+                    <input id="recommend_dept" type="text" name="recommend_dept" class="form-control" placeholder="请输入推荐科室">
                 </div>
             </div>
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
@@ -71,12 +71,13 @@
         <ec:gridItem itemId="symptoms_id" itemName="symptoms_id" hidden="true"></ec:gridItem>
         <ec:gridItem itemId="cate_id" itemName="cate_id" hidden="true"></ec:gridItem>
         <ec:gridItem itemId="title"  itemName="症状" width="200" showDetail="true"></ec:gridItem>
-        <ec:gridItem itemId="cate_name" itemName="部位"></ec:gridItem>
-        <ec:gridItem itemId="recommend_deptid" itemName="推荐科室编号"></ec:gridItem>
-        <ec:gridItem itemId="recommend_dept" itemName="推荐科室"></ec:gridItem>
-        <ec:gridItem itemId="cate_type" itemName="部位类型"></ec:gridItem>
-        <ec:gridItem itemId="sort_order" itemName="排序"></ec:gridItem>
-        <ec:gridItem itemId="publish_time" itemName="发布时间" showDetail="true"></ec:gridItem>
+        <ec:gridItem itemId="cate_name" itemName="部位" showDetail="true"></ec:gridItem>
+        <ec:gridItem itemId="recommend_deptid" width="200" itemName="推荐科室编号" showDetail="true"></ec:gridItem>
+        <ec:gridItem itemId="recommend_dept" width="200" itemName="推荐科室" showDetail="true"></ec:gridItem>
+        <ec:gridItem itemId="cate_type" itemName="部位类型" showDetail="true" collection="BODYTYPE"></ec:gridItem>
+        <ec:gridItem itemId="sort_order" itemName="排序" showDetail="true"></ec:gridItem>
+        <ec:gridItem itemId="publish_time" itemName="发布时间" width="200" showDetail="true"></ec:gridItem>
+        <ec:gridItem itemId="add_time" itemName="添加时间" width="200" showDetail="true"></ec:gridItem>
         <ec:gridItem itemId="status" itemName="状态" align="center" halign="center"
                      formatter="formatterStatus"></ec:gridItem>
         <ec:gridItem itemId="options" itemName="操作" formatter="optionsf" ></ec:gridItem>
@@ -201,20 +202,20 @@
         var arr = [];
         arr.push('<i class="fa fa-edit btn-info" style="font-size: 16px;" title="编辑症状" onclick="fnOpenWindow(\'edit\', ' + data.symptoms_id + ')"></i>');
         arr.push('<i class="fa fa-eye btn-primary" style="font-size: 16px;" title="预览症状" onclick="fnOpenWindow(\'preview\', ' + data.symptoms_id + ')"></i>');
-        arr.push('<i class="fa fa-remove btn-danger" style="font-size: 16px;" title="删除症状" onclick="delArticle(' + data.symptoms_id +  ')"></i>');
+        arr.push('<i class="fa fa-remove btn-danger" style="font-size: 16px;" title="删除症状" onclick="del(' + data.symptoms_id +  ')"></i>');
         return arr.join(' ');
     }
 
     //删除
-    function delArticle(id) {
+    function del(id) {
         Base.confirm("确认删除症状？！", function (flag) {
             if (!flag) {
                 return false;
             }
             Base.ajax({
                 type: 'post',
-                url: Base.globvar.basePath + "shh/article/articleManager/updateArticle",
-                data: {status: 3, article_id: id},
+                url: Base.globvar.basePath + "shh/symptoms/symptomsManager/updateSymptoms",
+                data: {status: 3, symptoms_id: id},
                 success: function (data) {
                     if (data.error === false) {
                         Base.alert("删除症状成功！");
