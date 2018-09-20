@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 * <p>Title: StringUtils.java</p>
 * <p>Description: String工具类</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年3月22日 上午11:05:58
 * @version 1.0

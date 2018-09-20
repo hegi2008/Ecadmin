@@ -30,7 +30,7 @@ import com.yinhai.ec.common.domain.UserDomain;
 * <p>Title: BaseController.java</p>
 * <p>Description: </p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年1月25日 下午2:09:33
 * @version 1.0

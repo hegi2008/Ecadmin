@@ -10,7 +10,7 @@ import org.apache.shiro.session.Session;
 * <p>Title: ShiroSessionRepository.java</p>
 * <p>Description: 为了便于扩展，我引入了一个接口ShiroSessionRepository，可以用redis、mongoDB等进行实现。</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年3月2日 上午9:54:54
 * @version 1.0

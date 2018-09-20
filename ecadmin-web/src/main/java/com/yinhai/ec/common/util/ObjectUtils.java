@@ -9,7 +9,7 @@ import java.util.Map;
 * <p>Title: ObjectUtils.java</p>
 * <p>Description:ObjectUtils </p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年3月22日 上午11:19:48
 * @version 1.0

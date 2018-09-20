@@ -26,7 +26,7 @@ import net.sf.ehcache.Element;
 * <p>Title: AppCodeTemplate.java</p>
 * <p>Description: 码表相关操作需要使用的类</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年2月2日 下午12:32:48
 * @version 1.0

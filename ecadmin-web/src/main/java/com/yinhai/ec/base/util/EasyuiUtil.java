@@ -11,7 +11,7 @@ import org.apache.shiro.util.CollectionUtils;
 * <p>Title: EasyuiUtil.java</p>
 * <p>Description: EasyuiUtil</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年1月26日 下午3:41:31
 * @version 1.0

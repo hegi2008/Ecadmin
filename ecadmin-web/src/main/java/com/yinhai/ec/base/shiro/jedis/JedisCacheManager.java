@@ -19,7 +19,7 @@ import com.yinhai.ec.base.redis.RedisObjAdapter;
 * <p>Title: JedisCacheManager.java</p>
 * <p>Description: 针对shiro的redis缓存管理器</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年3月2日 下午4:22:32
 * @version 1.0

@@ -14,7 +14,7 @@ import org.springframework.web.context.ContextLoaderListener;
 * <p>Title: HYContextListener.java</p>
 * <p>Description: 实现ContextLoaderListener</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年2月1日 下午4:07:13
 * @version 1.0

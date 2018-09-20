@@ -10,7 +10,7 @@ import com.yinhai.ec.common.domain.AppCodeDomain;
 * <p>Title: BaseCacheService.java</p>
 * <p>Description: 码表缓存service</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年2月1日 下午4:45:32
 * @version 1.0

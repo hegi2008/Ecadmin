@@ -10,7 +10,7 @@ import com.yinhai.ec.common.domain.UserDomain;
 * <p>Title: AppCodeService.java</p>
 * <p>Description: 码表管理service</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年4月11日 上午10:05:06
 * @version 1.0

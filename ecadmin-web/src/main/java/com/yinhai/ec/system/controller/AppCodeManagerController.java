@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 * <p>Title: AppCodeManagerController.java</p>
 * <p>Description: 码表管理</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年4月11日 上午9:45:28
 * @version 1.0

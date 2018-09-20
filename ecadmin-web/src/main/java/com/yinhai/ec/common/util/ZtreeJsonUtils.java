@@ -15,7 +15,7 @@ import com.yinhai.ec.common.domain.OrgDomain;
  * <p>Title: ZtreeJsonUtils.java</p>
  * <p>Description: 工具类</p>
  * <p>Copyright: Copyright (c) 2016</p>
- * <p>Company: 陈瓜瓜软件股份有限公司</p>
+ * <p>Company: 贵州医美达</p>
  * @date 2016/4/26
  */
 public class ZtreeJsonUtils {

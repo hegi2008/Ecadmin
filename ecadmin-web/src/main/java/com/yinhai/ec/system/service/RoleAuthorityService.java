@@ -16,7 +16,7 @@ import com.yinhai.ec.common.domain.UserRolesDomain;
 * <p>Title: RoleAuthorityService.java</p>
 * <p>Description: 角色权限管理service</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年1月26日 下午1:59:14
 * @version 1.0

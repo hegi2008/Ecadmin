@@ -28,7 +28,7 @@ import com.yinhai.ec.system.service.AlbumManagerService;
 * <p>Title: AlbumManagerController.java</p>
 * <p>Description: 相册管理</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年3月21日 下午4:28:29
 * @version 1.0

@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 * <p>Title: FTPUtil.java</p>
 * <p>Description: FTP上传下载文件工具类 使用此工具类需要注意的是自己所在的目录 自己不在要操作的文件所在的目录内会导致操作失败</p>
 * <p>Copyright: Copyright (c) 2016</p>
-* <p>Company: 陈瓜瓜软件股份有限公司</p>
+* <p>Company: 贵州医美达</p>
 * @author cjh
 * @date 2016年2月23日 下午2:38:36
 * @version 1.0

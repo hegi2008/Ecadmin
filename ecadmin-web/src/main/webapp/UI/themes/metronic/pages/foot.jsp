@@ -61,7 +61,7 @@
         <!-- pre footer 结束 -->
         <!-- footer 开始 -->
         <div class="page-footer">
-            <div class="container"> 2017 © 陈瓜瓜软件股份有限公司 版权所有   蜀备 ICP0500389号</span>
+            <div class="container"> 2017 © 贵州医美达 版权所有   蜀备 ICP0500389号</span>
                 <a target="_blank" href="">http://www.yinhai.com</a>
             </div>
         </div>

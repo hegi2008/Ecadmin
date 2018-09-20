@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
  * <p>Title: QuartzJobSupport.java</p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2016</p>
- * <p>Company: 陈瓜瓜软件股份有限公司</p>
+ * <p>Company: 贵州医美达</p>
  */
 
 public abstract class QuartzJobSupport extends QuartzJobBean {

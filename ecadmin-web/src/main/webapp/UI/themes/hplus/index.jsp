@@ -171,7 +171,7 @@
                 <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<%=basePath%>UI/welcome.html" frameborder="0" data-id="welcome.html" seamless></iframe>
             </div>
             <div class="footer">
-                <div class="pull-right">&copy; 2016-2020 <a href="http://www.yinhai.com" target="_blank">陈瓜瓜软件</a>
+                <div class="pull-right">&copy; 2016-2020 <a href="http://www.yinhai.com" target="_blank">贵州医美达</a>
                 </div>
             </div>
         </div>
