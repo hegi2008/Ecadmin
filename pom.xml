@@ -21,7 +21,7 @@
 		<spring-ibatis.version>2.0.8</spring-ibatis.version>
 		<httpclient.version>4.5.2</httpclient.version>
 		<httpcore.version>4.4.4</httpcore.version>
-		<fastjson.version>1.2.5</fastjson.version>
+		<fastjson.version>1.2.83</fastjson.version>
 		<cglib.version>2.2.2</cglib.version>
 		<shiro.version>1.2.4</shiro.version>
 		<shiro-cas.version>1.2.4</shiro-cas.version>
